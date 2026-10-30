@@ -1,0 +1,6 @@
+{
+  "name": "MenuBarMijia — Mac 菜单栏与 Windows 托盘里的米家控制中心",
+  "description": "开源跨平台桌面端米家与 Home Assistant 控制中心。按住说话、拼音找设备、锁屏关灯，让家里的智能设备跟上你使用电脑的节奏。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

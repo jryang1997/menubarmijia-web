@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MenuBarMijia README 视觉排版预览</title>
+  <style>
+    :root {
+      --bg-primary: #0d1117;
+      --bg-surface: #161b22;
+      --bg-card: rgba(22, 27, 34, 0.75);
+      --bg-tertiary: #21262d;
+      --border-color: #30363d;
+      --border-subtle: #21262d;
+      --text-main: #f0f6fc;
+      --text-muted: #8b949e;
+      --accent-blue: #58a6ff;
+      --accent-green: #3fb950;
+      --accent-orange: #d29922;
+      --accent-purple: #bc8cff;
+      --accent-red: #f85149;
+      --placeholder-bg: rgba(56, 139, 253, 0.04);
+      --placeholder-border: #388bfd;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+      --shadow-lg: 0 12px 28px rgba(0,0,0,0.45);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f6f8fa;
+      --bg-surface: #ffffff;
+      --bg-card: rgba(255, 255, 255, 0.88);
+      --bg-tertiary: #eaeef2;
+      --border-color: #d0d7de;
+      --border-subtle: #e1e4e8;
+      --text-main: #1f2328;
+      --text-muted: #656d76;
+      --accent-blue: #0969da;
+      --accent-green: #1a7f37;
+      --accent-orange: #9a6700;
+      --accent-purple: #8250df;
+      --accent-red: #cf222e;
+      --placeholder-bg: rgba(9, 105, 218, 0.04);
+      --placeholder-border: #0969da;
+      --shadow-sm: 0 1px 3px rgba(31,35,40,0.12);
+      --shadow-lg: 0 12px 28px rgba(31,35,40,0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.65;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    /* Top Navigation Bar */
+    header.top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+    }
+
+    .brand-title {
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-version {
+      font-size: 12px;
+      padding: 2px 7px;
+      background: rgba(88, 166, 255, 0.15);
+      color: var(--accent-blue);
+      border-radius: 12px;
+      font-weight: 500;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      max-width: 65%;
+      padding: 4px;
+    }
+
+    .nav-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 14px;
+      font-size: 13.5px;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .nav-tab-btn:hover {
+      color: var(--text-main);
+      background: var(--bg-tertiary);
+    }
+
+    .nav-tab-btn.active {
+      color: var(--text-main);
+      background: var(--bg-tertiary);
+      font-weight: 600;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .theme-toggle-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Main Container */
+    .app-layout {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 32px 24px 80px 24px;
+    }
+
+    /* Tab Panes */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Markdown Document Container */
+    .markdown-body {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    @media (max-width: 768px) {
+      .markdown-body {
+        padding: 24px 16px;
+      }
+      .nav-tabs {
+        display: none;
+      }
+    }
+
+    /* Typography & Elements */
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--text-main);
+      font-weight: 600;
+      line-height: 1.35;
+      margin-top: 1.8em;
+      margin-bottom: 0.8em;
+    }
+
+    h1 {
+      font-size: 32px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 22px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 8px;
+    }
+
+    h3 {
+      font-size: 18px;
+    }
+
+    p {
+      margin-bottom: 1.1em;
+    }
+
+    a {
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border-color);
+      margin: 32px 0;
+    }
+
+    ul, ol {
+      margin-left: 24px;
+      margin-bottom: 1.2em;
+    }
+
+    li {
+      margin-bottom: 0.4em;
+    }
+
+    blockquote {
+      border-left: 4px solid var(--accent-blue);
+      padding: 12px 18px;
+      background: var(--placeholder-bg);
+      color: var(--text-muted);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 1.4em 0;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 88%;
+      padding: 0.2em 0.4em;
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    pre {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      overflow-x: auto;
+      margin: 1.3em 0;
+      position: relative;
+    }
+
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5em 0;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      text-align: left;
+    }
+
+    th {
+      background: var(--bg-tertiary);
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) td {
+      background: rgba(125, 125, 125, 0.03);
+    }
+
+    /* BADGES */
+    .badge-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin: 14px 0 20px 0;
+    }
+
+    /* Lean, Clean Placeholder Cards */
+    .media-placeholder {
+      margin: 24px 0;
+      border: 2px dashed var(--placeholder-border);
+      border-radius: var(--radius-lg);
+      background: var(--placeholder-bg);
+      padding: 20px 24px;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .media-placeholder:hover {
+      box-shadow: 0 4px 20px rgba(88, 166, 255, 0.12);
+      border-color: var(--accent-blue);
+    }
+
+    .placeholder-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .placeholder-title {
+      font-weight: 600;
+      font-size: 14.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-main);
+    }
+
+    .badge-todo {
+      background: var(--accent-orange);
+      color: #000;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+      letter-spacing: 0.3px;
+    }
+
+    .wireframe-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .wireframe-icon {
+      font-size: 30px;
+      flex-shrink: 0;
+    }
+
+    .wireframe-text {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .wireframe-text strong {
+      color: var(--text-main);
+    }
+
+    .wireframe-path {
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      color: var(--accent-blue);
+      margin-top: 4px;
+    }
+
+    /* Copy Button */
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 4px 8px;
+      font-size: 11px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: var(--bg-tertiary);
+    }
+  </style>
+</head>
+<body data-theme="dark">
+
+  <!-- TOP NAVIGATION HEADER -->
+  <header class="top-nav">
+    <div class="brand-section">
+      <img src="../docs/assets/AppIcon_512.png" alt="MenuBarMijia" class="brand-logo" onerror="this.src='https://raw.githubusercontent.com/jryang1997/MenuBarMijia/main/docs/assets/AppIcon_512.png'">
+      <div class="brand-title">MenuBarMijia README 提案预览</div>
+      <span class="brand-version">v1.1.4 正式版</span>
+    </div>
+
+    <nav class="nav-tabs">
+      <button class="nav-tab-btn active" onclick="switchTab('zh-cn')">🇨🇳 中文提案 (README.zh-CN)</button>
+      <button class="nav-tab-btn" onclick="switchTab('en')">🇬🇧 英文提案 (README.en)</button>
+      <button class="nav-tab-btn" onclick="switchTab('structure')">📐 架构设计与标语 (STRUCTURE)</button>
+      <button class="nav-tab-btn" onclick="switchTab('shotlist')">🎬 演示分镜表 (SHOTLIST)</button>
+      <button class="nav-tab-btn" onclick="switchTab('factcheck')">🛡️ 事实核查表 (FACT_CHECK)</button>
+      <button class="nav-tab-btn" onclick="switchTab('qa')">📋 验收自评 (QA)</button>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="theme-toggle-btn" onclick="toggleTheme()">🌓 切换深/浅色</button>
+    </div>
+  </header>
+
+  <main class="app-layout">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: 中文提案 README.zh-CN.proposal.md      -->
+    <!-- ========================================== -->
+    <div id="tab-zh-cn" class="tab-content active">
+      <article class="markdown-body">
+        
+        <p align="center" style="font-size: 13px; color: var(--text-muted);">
+          [English](README.md) | 简体中文
+        </p>
+
+        <p align="center">
+          <img src="../docs/assets/logo.svg" width="110" alt="MenuBarMijia Logo" onerror="this.src='https://raw.githubusercontent.com/jryang1997/MenuBarMijia/main/docs/assets/logo.svg'">
+        </p>
+
+        <h1 align="center" style="border: none; margin-top: 10px;">MenuBarMijia</h1>
+
+        <p align="center" style="font-size: 19px; font-weight: 600; margin-bottom: 6px; color: var(--accent-blue);">
+          在电脑上，顺手控制整个家。
+        </p>
+
+        <p align="center" style="color: var(--text-muted); font-size: 14.5px; max-width: 680px; margin: 0 auto 16px auto;">
+          面向 macOS 的原生菜单栏智能家居控制工具，亦提供 Windows 11 托盘版本。<br>
+          无需提前搭建 Home Assistant，手机扫码即可连接米家；支持键盘拼音盲搜、按住说话、状态联动与误触撤销。
+        </p>
+
+        <div class="badge-bar">
+          <a href="https://github.com/jryang1997/MenuBarMijia/releases/latest"><img src="https://img.shields.io/github/v/release/jryang1997/MenuBarMijia?color=0A84FF&label=release" alt="Latest Release"></a>
+          <img src="https://img.shields.io/badge/macOS-14%2B-000000?logo=apple&logoColor=white" alt="macOS 14+">
+          <img src="https://img.shields.io/badge/Windows_11-Tauri_v2-0078D4?logo=windows11&logoColor=white" alt="Windows 11">
+          <img src="https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white" alt="Swift 6">
+          <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License">
+        </div>
+
+        <p align="center" style="font-size: 13.5px;">
+          <a href="https://github.com/jryang1997/MenuBarMijia/releases/latest">下载最新版本 (v1.1.4)</a> ·
+          <a href="#quickstart-zh">安装与连接</a> ·
+          <a href="#matrix-zh">平台能力对照</a> ·
+          <a href="#safety-zh">安全与限制</a> ·
+          <a href="../CHANGELOG.md">更新日志</a>
+        </p>
+
+        <pre><code># macOS 用户推荐通过 Homebrew 一行安装
+brew install --cask jryang1997/tap/menubarmijia</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+
+        <hr>
+
+        <!-- HERO GIF PLACEHOLDER -->
+        <div class="media-placeholder">
+          <div class="placeholder-header">
+            <div class="placeholder-title">
+              <span>🖼️ 核心动态演示 · GIF-01</span>
+              <span class="badge-todo">待录屏</span>
+            </div>
+            <span style="font-size: 12px; color: var(--text-muted);">首屏核心动图</span>
+          </div>
+          <div class="wireframe-box">
+            <div class="wireframe-icon">⌨️</div>
+            <div class="wireframe-text">
+              <strong>键盘盲搜与极速控制：</strong>按 <code>⌥M</code> 呼出面板 ➔ 输入 <code>sftd</code> 找到「书房台灯」 ➔ 回车开启 ➔ 面板自然收起。
+              <div class="wireframe-path">拟定路径：docs/assets/readme-v2/hero-keyboard.gif</div>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <h2>为什么把家居控制放进电脑</h2>
+        <p>在电脑前工作或开会时，不必特意拿起手机打断手头的事：</p>
+        
+        <ul>
+          <li><strong>手不离键盘，打字找灯：</strong> 按下 <code>⌥M</code> 呼出面板，输入名字或拼音首字母（如 <code>sftd</code> 找「书房台灯」），回车直接开关，左右方向键调节亮度与色温。不用切换中文输入法，不用在多层房间列表里滚动寻找。</li>
+          <li><strong>按住说话，松手执行：</strong> 长按全局快捷键 <code>⌥M</code> 或菜单栏图标开始说话，说完松开立即执行。常规开关、调光、调温由本地规则秒级解析；多步或模糊指令可由你自选的 AI 处理，没有唤醒词，也不做多余的语音播报。</li>
+          <li><strong>跟上你的工作状态：</strong> 人离开 Mac 锁屏时自动关掉书房灯，接上外接显示器时打开桌面氛围灯。系统事件与家居控制的联动规则默认全部关闭，全凭你按需启用。</li>
+          <li><strong>能撤销，才敢放心批量关：</strong> 睡前长按 0.6 秒全关当前房间所有运行中的灯与温控设备。插座与扫地机默认排除，避免误切路由器电源；误触后底部提供 10–15 秒撤销横幅，点一下就能恢复原状。</li>
+        </ul>
+
+        <hr>
+
+        <h2>操作演示</h2>
+
+        <h3>1. 按住说话，松手执行</h3>
+        <p>无需唤醒词。长按全局快捷键或菜单栏图标直接说话，执行完成后在输入框旁显示耗时与执行方式回执（本地规则解析或云端模型决策）。</p>
+
+        <!-- GIF-02 PLACEHOLDER -->
+        <div class="media-placeholder">
+          <div class="placeholder-header">
+            <div class="placeholder-title">
+              <span>🎙️ 演示动图 · GIF-02</span>
+              <span class="badge-todo">待录屏</span>
+            </div>
+          </div>
+          <div class="wireframe-box">
+            <div class="wireframe-icon">🎙️</div>
+            <div class="wireframe-text">
+              <strong>按住说话与耗时回执：</strong>长按菜单栏图标 ➔ 说话「把书房灯切到月光模式」 ➔ 松手发送 ➔ 显示 <code>⚡ 本地 · 12ms</code> 并切至月光模式。
+              <div class="wireframe-path">拟定路径：docs/assets/readme-v2/voice-ptt.gif</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>2. 批量全关与即刻撤销</h3>
+        <p>一键关闭当前房间内所有运行中的灯、空调、电暖器与风扇。长按 0.6 秒触发防误触；智能插座与正在清扫的扫地机默认不参与。</p>
+
+        <!-- GIF-03 PLACEHOLDER -->
+        <div class="media-placeholder">
+          <div class="placeholder-header">
+            <div class="placeholder-title">
+              <span>🛡️ 演示动图 · GIF-03</span>
+              <span class="badge-todo">待录屏</span>
+            </div>
+          </div>
+          <div class="wireframe-box">
+            <div class="wireframe-icon">⏻</div>
+            <div class="wireframe-text">
+              <strong>全关防误触与撤销恢复：</strong>长按「全关」0.6 秒 ➔ 运行中的灯与风扇关闭，插座保持通电 ➔ 底部浮起撤销横幅 ➔ 点击「撤销」原位恢复状态。
+              <div class="wireframe-path">拟定路径：docs/assets/readme-v2/undo-all-off.gif</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>3. 跟随 Mac 屏幕状态联动</h3>
+        <p>将日常离开或回到工位的动作转化为自动化。锁屏、合盖休眠时自动关闭指定房间照明；解锁唤醒或连接外接显示器时触发指定环境。</p>
+
+        <!-- GIF-04 PLACEHOLDER -->
+        <div class="media-placeholder">
+          <div class="placeholder-header">
+            <div class="placeholder-title">
+              <span>🖥️ 演示动图 · GIF-04</span>
+              <span class="badge-todo">待录屏</span>
+            </div>
+          </div>
+          <div class="wireframe-box">
+            <div class="wireframe-icon">🔒</div>
+            <div class="wireframe-text">
+              <strong>Mac 锁屏离席自动化：</strong>设置「离开 Mac 时关闭书房灯」 ➔ 系统锁屏 ➔ 唤醒后打开面板，书房台灯已自动关闭。
+              <div class="wireframe-path">拟定路径：docs/assets/readme-v2/automation-away.gif</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>4. 温湿度趋势与插座用电统计</h3>
+        <p>点击温湿度计或顶部环境指示胶囊，可展开 24 小时 / 7 天历史趋势折线图；点击电量插座可查看今日与最近 7 天的累计用电增量统计。</p>
+
+        <!-- IMG-01 PLACEHOLDER -->
+        <div class="media-placeholder">
+          <div class="placeholder-header">
+            <div class="placeholder-title">
+              <span>📈 界面截图 · IMG-01</span>
+              <span class="badge-todo">待截图</span>
+            </div>
+          </div>
+          <div class="wireframe-box">
+            <div class="wireframe-icon">📊</div>
+            <div class="wireframe-text">
+              <strong>温湿度趋势折线图与电量排行：</strong>传感器 24h / 7d 双曲线与极值悬停胶囊，配对插座 7 天耗电柱状图。
+              <div class="wireframe-path">拟定路径：docs/assets/readme-v2/sensor-chart.png</div>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <h2 id="matrix-zh">功能概览与双端对照</h2>
+        <p>MenuBarMijia 的 macOS 版本采用 Swift 6 原生开发，Windows 11 版本基于 Tauri v2 / TypeScript 独立实现。两端均经过共享测试集（<code>Tests/Fixtures/</code>）断言基础协议的一致性，但系统级能力存在平台差异。</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>功能维度</th>
+              <th style="text-align: center;">macOS 原生版 (14+)</th>
+              <th style="text-align: center;">Windows 11 托盘版</th>
+              <th>能力说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>米家云端扫码直连</strong></td>
+              <td style="text-align: center;">✅ 支持</td>
+              <td style="text-align: center;">✅ 支持</td>
+              <td>手机米家 App 扫码登录，支持中/欧/美/俄/新加坡多区域服务器</td>
+            </tr>
+            <tr>
+              <td><strong>Home Assistant 接入</strong></td>
+              <td style="text-align: center;">✅ 支持</td>
+              <td style="text-align: center;">— 暂不支持</td>
+              <td>macOS 支持局域网 WebSocket 直连与官方 xiaomi_home 实体聚合</td>
+            </tr>
+            <tr>
+              <td><strong>键盘搜索与设备控制</strong></td>
+              <td style="text-align: center;">✅ 支持</td>
+              <td style="text-align: center;">✅ 支持</td>
+              <td>支持拼音首字母（如 sftd）与设备名搜索，方向键微调参数</td>
+            </tr>
+            <tr>
+              <td><strong>全局快捷键呼出</strong></td>
+              <td style="text-align: center;">✅ <code>⌥M</code>（支持自定义）</td>
+              <td style="text-align: center;">✅ <code>Alt+M</code>（支持自定义）</td>
+              <td>1.1.4 Windows 版已补齐自定义热键录制与占用冲突检测</td>
+            </tr>
+            <tr>
+              <td><strong>语音控制方式</strong></td>
+              <td style="text-align: center;">✅ 菜单栏按住 / 热键长按 / 免提</td>
+              <td style="text-align: center;">⚠️ 仅免提听写</td>
+              <td>macOS 支持系统原生听写与按住说话；Windows 使用 WebView 听写</td>
+            </tr>
+            <tr>
+              <td><strong>本地口令解析</strong></td>
+              <td style="text-align: center;">✅ 支持</td>
+              <td style="text-align: center;">✅ 支持</td>
+              <td>开关、调光、调温、风速、延时等常规口令双端均在本地解析</td>
+            </tr>
+            <tr>
+              <td><strong>自选 AI 决策助手</strong></td>
+              <td style="text-align: center;">✅ 支持</td>
+              <td style="text-align: center;">✅ 支持</td>
+              <td>可选接入 Jev、DeepSeek、Ollama 等；把握度低于 80% 需手动确认</td>
+            </tr>
+            <tr>
+              <td><strong>批量全关与即刻撤销</strong></td>
+              <td style="text-align: center;">✅ 支持</td>
+              <td style="text-align: center;">✅ 支持</td>
+              <td>长按 0.6s 触发，插座与扫地机默认保护；提供 10–15 秒撤销横幅</td>
+            </tr>
+            <tr>
+              <td><strong>Mac 状态自动化</strong></td>
+              <td style="text-align: center;">✅ 支持</td>
+              <td style="text-align: center;">— 暂不支持</td>
+              <td>支持锁屏、唤醒、外接显示器连接等系统事件联动</td>
+            </tr>
+            <tr>
+              <td><strong>系统快捷指令集成</strong></td>
+              <td style="text-align: center;">✅ 支持 (4 个动作)</td>
+              <td style="text-align: center;">— 暂不支持</td>
+              <td>提供设备切换、执行场景、一句话控制、查询温湿度 4 项 App Intents</td>
+            </tr>
+            <tr>
+              <td><strong>URL Scheme 控制</strong></td>
+              <td style="text-align: center;">✅ 支持</td>
+              <td style="text-align: center;">— 暂不支持</td>
+              <td>menumijia://toggle 等外部调用，执行前强制弹窗确认</td>
+            </tr>
+            <tr>
+              <td><strong>传感器历史折线图</strong></td>
+              <td style="text-align: center;">✅ 24h / 7d 趋势</td>
+              <td style="text-align: center;">⚠️ 基础读数显示</td>
+              <td>1.1.4 macOS 端已实现历史折线图；Windows 端图表正在跟进中</td>
+            </tr>
+            <tr>
+              <td><strong>插座电量统计</strong></td>
+              <td style="text-align: center;">✅ 支持</td>
+              <td style="text-align: center;">✅ 支持</td>
+              <td>仅统计插座上报的真实累计电量增量，无数据不凭空估算</td>
+            </tr>
+            <tr>
+              <td><strong>视觉主题皮肤</strong></td>
+              <td style="text-align: center;">✅ 9 套主题 + 4 档高度</td>
+              <td style="text-align: center;">✅ 9 套主题</td>
+              <td>支持经典、霜白、夜航、液态玻璃、便当格、胶囊等</td>
+            </tr>
+            <tr>
+              <td><strong>安装签名与更新机制</strong></td>
+              <td style="text-align: center;">⚠️ 本地签名 + Ed25519 验签更新</td>
+              <td style="text-align: center;">⚠️ 未签名安装包</td>
+              <td>macOS 需手动允许首次打开；Windows 首次安装有 SmartScreen 提示</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2 id="quickstart-zh">快速开始</h2>
+
+        <h3>1. 系统要求与安装</h3>
+        <ul>
+          <li><strong>macOS：</strong> 支持 macOS 14 (Sonoma) 及以上系统。</li>
+          <li><strong>Windows：</strong> 支持 Windows 11（64 位）。</li>
+        </ul>
+
+        <h4>macOS 安装</h4>
+        <p><strong>方式 A：通过 Homebrew 一行安装（推荐）</strong></p>
+        <pre><code>brew install --cask jryang1997/tap/menubarmijia</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+        <blockquote>若 Homebrew 提示需要信任第三方 Tap，可先执行 <code>brew trust --cask jryang1997/tap/menubarmijia</code>。</blockquote>
+
+        <p><strong>方式 B：下载 DMG 手动安装</strong><br>
+        前往 <a href="https://github.com/jryang1997/MenuBarMijia/releases/latest">GitHub Releases</a> 下载最新的 <code>MenuBarMijia-1.1.4.dmg</code>，打开并将 <code>MenuBarMijia.app</code> 拖入「应用程序（Applications）」文件夹。<br>
+        <em>首次打开拦截说明：</em> 本项目为个人开源作品，尚未加入付费的 Apple 开发者计划（未完成 Developer ID 公证）。首次启动若被 Gatekeeper 拦截，请打开 <strong>「系统设置 → 隐私与安全性」</strong>，在页面底部点击针对 MenuBarMijia 的 <strong>「仍要打开」</strong> 即可。</p>
+
+        <h4>Windows 11 安装</h4>
+        <p>前往 <a href="https://github.com/jryang1997/MenuBarMijia/releases/latest">GitHub Releases</a> 下载 <code>MenuBarMijia-1.1.4-windows-x64-setup.exe</code> 或 <code>.msi</code> 安装包。<br>
+        <em>SmartScreen 提示说明：</em> 当前 Windows 正式发布包暂未购买商业代码签名证书。首次安装若弹出“Windows 已保护你的电脑”，请点击 <strong>「更多信息」→「仍要运行」</strong>。安装包 SHA-256 哈希值已在 Releases 页面公开，可自行校验完整性。</p>
+
+        <hr>
+
+        <h3>2. 连接你的智能设备</h3>
+        <p>启动应用后，点击常驻图标展开控制面板，点击右下角设置齿轮 <code>⚙️</code>：</p>
+
+        <!-- IMG-02 PLACEHOLDER -->
+        <div class="media-placeholder">
+          <div class="placeholder-header">
+            <div class="placeholder-title">
+              <span>⚙️ 界面截图 · IMG-02</span>
+              <span class="badge-todo">待截图</span>
+            </div>
+          </div>
+          <div class="wireframe-box">
+            <div class="wireframe-icon">📱</div>
+            <div class="wireframe-text">
+              <strong>连接设置界面：</strong>设置窗口中的三个入口（米家云端直连扫码、Home Assistant 局域网配置、离线演示模式）。
+              <div class="wireframe-path">拟定路径：docs/assets/readme-v2/connect-setup.png</div>
+            </div>
+          </div>
+        </div>
+
+        <ul>
+          <li><strong>方式一：米家云端扫码直连（推荐）：</strong> 在设置中选择「米家云端直连」，屏幕上将显示登录二维码。使用手机「米家」App 扫码并确认登录，全屋家庭、房间与设备将自动同步到面板中。</li>
+          <li><strong>方式二：接入已有 Home Assistant（macOS 专属）：</strong> 选择「Home Assistant」模式，填写局域网地址（如 <code>http://192.168.1.100:8123</code>）与长期访问令牌。应用将自动把拆散的开关、传感器等实体聚合成单一设备卡片。</li>
+          <li><strong>方式三：离线演示模式（Demo Home）：</strong> 无需账号即可体验。完全切断外网网络请求，方便快速体验界面或录屏测试。</li>
+        </ul>
+
+        <hr>
+
+        <h2 id="safety-zh">安全、隐私与限制</h2>
+        <ol>
+          <li><strong>非小米官方合作或客户端：</strong> 本项目是个人主导的独立开源工具，未获得小米、米家官方授权。云端直连使用非公开的米家客户端接口，小米可能随服务升级调整协议或触发账号风控。若对账号安全有顾虑，建议在 macOS 上使用基于官方开源集成的 Home Assistant 模式。</li>
+          <li><strong>凭据安全与系统钥匙串：</strong>
+            <ul>
+              <li>macOS 端：登录会话令牌与配置的 AI API Key 统一保存于 macOS 系统钥匙串（<code>CredentialVault</code>），不留明文文件，且不再保存账号级长期 <code>passToken`。由于使用自签名证书，升级版本后首次启动系统可能会询问一次钥匙串授权，点击「始终允许」即可。</li>
+              <li>Windows 端：登录凭证统一保存于 Windows 凭据管理器（Credential Manager），本地存储仅保留 UI 布局偏好。</li>
+            </ul>
+          </li>
+          <li><strong>AI 服务的交互与数据边界：</strong> 使用本地解析口令时，没有任何数据会外发至第三方大模型服务。仅当你主动配置了外部 AI 服务（如 DeepSeek、OpenRouter 或自定义端点）且输入了复杂模糊指令时，应用才会把当句口令、当前涉及设备的状态摘要发往该端点。API Key 始终留在请求头中，绝不会拼接至 Prompt 正文，亦绝不包含米家登录凭据。</li>
+          <li><strong>高风险操作二次确认：</strong> AI 模型给出的操作建议中，置信度低于 80% 的动作不会擅自运行，而是作为候选胶囊供你点选。对于电暖器开启、智能插座通电、启动扫地机等高风险动作，无论置信度多高，均必须经由人工二次确认。</li>
+          <li><strong>设备通信路径与离线边界：</strong> 设备控制指令需经由米家云端或局域网 Home Assistant 转发到达设备。当前版本未提供全屋局域网 miIO 直连（技术论证详见 <a href="../docs/adr/0007-lan-direct-deferred.md">ADR-0007</a>），在米家云模式下电脑需保持联网。</li>
+          <li><strong>签名与公证说明：</strong> 本项目暂未购买付费的 Apple 开发者商业证书与 Windows Authenticode 签名。macOS DMG 的应用内更新采用内置 Ed25519 离线私钥做摘要防篡改校验；首次全新安装请参考前文的系统放行说明。</li>
+        </ol>
+
+        <hr>
+
+        <h2>参与开发与技术架构</h2>
+        <p>纯 Swift Package，<strong>零第三方 Swift 依赖</strong>，开启 Swift 6 严格并发检查。核心领域模型、规格解析与状态合成位于独立的 <code>MijiaCore</code> 库中；Windows 端为独立的第二套 Tauri v2 实现，双端通过 <code>Tests/Fixtures/</code> 共享测试集共同保障意图一致性（详见 <a href="../docs/adr/0006-dual-platform-implementation.md">ADR-0006</a>）。</p>
+
+        <pre><code># macOS 本地全量测试与代码门禁检查
+bash scripts/check.sh
+
+# 编译、打包并启动 macOS 本地构建
+bash scripts/build_app.sh
+
+# Windows 托盘版本地构建与测试
+cd windows
+npm install
+npm test
+npm run build</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+
+        <p>在提交 Pull Request 前，请先阅读 <a href="../CODING_STANDARDS.md">CODING_STANDARDS.md</a>；领域术语定义见 <a href="../GLOSSARY.md">GLOSSARY.md</a>。</p>
+
+        <hr>
+
+        <h2>协议与致谢</h2>
+        <p>本项目采用 <a href="../LICENSE">MIT License</a> 许可开源。感谢所有为 MenuBarMijia 提交代码、反馈问题与打磨体验的贡献者！如果这个小工具让你在工作时少掏了几次手机，欢迎点个 ⭐ Star。</p>
+
+      </article>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: 英文提案 README.en.proposal.md        -->
+    <!-- ========================================== -->
+    <div id="tab-en" class="tab-content">
+      <article class="markdown-body">
+        <p align="center" style="font-size: 13px; color: var(--text-muted);">
+          English | [简体中文](README.zh-CN.md)
+        </p>
+
+        <p align="center">
+          <img src="../docs/assets/logo.svg" width="110" alt="MenuBarMijia Logo" onerror="this.src='https://raw.githubusercontent.com/jryang1997/MenuBarMijia/main/docs/assets/logo.svg'">
+        </p>
+
+        <h1 align="center" style="border: none; margin-top: 10px;">MenuBarMijia</h1>
+
+        <p align="center" style="font-size: 19px; font-weight: 600; margin-bottom: 6px; color: var(--accent-blue);">
+          Control your entire home right from your computer, without picking up your phone.
+        </p>
+
+        <p align="center" style="color: var(--text-muted); font-size: 14.5px; max-width: 680px; margin: 0 auto 16px auto;">
+          A native macOS menu-bar app for Xiaomi / Mijia smart home devices, with a companion Windows 11 tray build.<br>
+          Scan a QR code to connect directly to Mi Home without setting up Home Assistant. Features keyboard fuzzy search, push-to-talk voice, Mac event automation, and one-click undo.
+        </p>
+
+        <div class="badge-bar">
+          <a href="https://github.com/jryang1997/MenuBarMijia/releases/latest"><img src="https://img.shields.io/github/v/release/jryang1997/MenuBarMijia?color=0A84FF&label=release" alt="Latest Release"></a>
+          <img src="https://img.shields.io/badge/macOS-14%2B-000000?logo=apple&logoColor=white" alt="macOS 14+">
+          <img src="https://img.shields.io/badge/Windows_11-Tauri_v2-0078D4?logo=windows11&logoColor=white" alt="Windows 11">
+          <img src="https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white" alt="Swift 6">
+          <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License">
+        </div>
+
+        <pre><code># Recommended one-line installation on macOS via Homebrew Cask
+brew install --cask jryang1997/tap/menubarmijia</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+
+        <hr>
+
+        <!-- ENGLISH HERO PLACEHOLDER -->
+        <div class="media-placeholder">
+          <div class="placeholder-header">
+            <div class="placeholder-title">
+              <span>🖼️ Core Interactive Demo · GIF-01</span>
+              <span class="badge-todo">Pending Capture</span>
+            </div>
+            <span style="font-size: 12px; color: var(--text-muted);">Hero animation</span>
+          </div>
+          <div class="wireframe-box">
+            <div class="wireframe-icon">⌨️</div>
+            <div class="wireframe-text">
+              <strong>Keyboard Search & Control:</strong> Press <code>⌥M</code> hotkey ➔ Type initials <code>sftd</code> to highlight "Study Desk Lamp" ➔ Press <code>Return</code> to toggle ➔ Panel dismisses cleanly.
+              <div class="wireframe-path">Planned Path: docs/assets/readme-v2/hero-keyboard.gif</div>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <h2>Why Put Smart Home Control on Your Desktop?</h2>
+        <p>When coding, writing, or in a meeting, you don't need to reach for your phone:</p>
+        
+        <ul>
+          <li><strong>Keep Your Hands on the Keyboard:</strong> Press <code>⌥M</code> to summon the panel, type a name or pinyin initials (e.g. <code>sftd</code> for "Study Desk Lamp"), and hit <code>Return</code> to toggle. Use arrow keys to adjust brightness or color temperature. No scrolling through nested room trees.</li>
+          <li><strong>Push-to-Talk, Release to Run:</strong> Hold <code>⌥M</code> or the menu bar icon to speak your command, and release when you are done. Everyday commands like switching lights or setting the thermostat run instantly through local parsing rules—no wake words, no sluggish voice chatter. Optional AI backends handle multi-step requests.</li>
+          <li><strong>Sync with Your Daily Work Rhythm:</strong> Automatically turn off lights when you lock your Mac or step away. Trigger your focus lighting when plugging in an external display. All automation rules are disabled by default; you stay in full control of what triggers when.</li>
+          <li><strong>Peace of Mind with One-Click Undo:</strong> Long-press "All Off" for 0.6 seconds before bed to shut down active lights and climate devices in the current room. Crucial plugs and vacuum robots are excluded by default to protect network equipment. If you hit it by mistake, an undo banner floats for 10–15 seconds to restore your previous states and brightness values.</li>
+        </ul>
+
+      </article>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: 架构设计与标语 README_STRUCTURE.md     -->
+    <!-- ========================================== -->
+    <div id="tab-structure" class="tab-content">
+      <article class="markdown-body">
+        <h2>📐 叙事架构与标语决策说明 (README_STRUCTURE)</h2>
+        <p>面向日常普通 Mac 用户，去除非必要的防守型免责说明与技术堆砌，构建清晰利落的 3秒、30秒、3分钟 认知漏斗。</p>
+
+        <h3>首页标语（Slogan）4 案对比与评审结果</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>方案</th>
+              <th>主标语（Slogan）</th>
+              <th>副标题说明</th>
+              <th>风格倾向</th>
+              <th>评审结论</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background: rgba(56, 139, 253, 0.08);">
+              <td><strong>方案 A<br>(推荐)</strong></td>
+              <td><strong>在电脑上，顺手控制整个家。</strong></td>
+              <td>面向 macOS 的原生菜单栏智能家居控制工具，亦支持 Windows 11。无需部署 Home Assistant，扫码即用。</td>
+              <td>极简、生活化、自然</td>
+              <td><strong>🏆 采纳</strong>：零营销套话，直击痛点，符合 /humanizer-zh 风格与 Mac 独立精品应用定位。</td>
+            </tr>
+            <tr>
+              <td>方案 B</td>
+              <td>让家里的设备，跟上你的工作节奏。</td>
+              <td>键盘拼音找灯、按住说话、锁屏离席自动关设备。Mac 菜单栏原生米家控制中心。</td>
+              <td>效率、场景联动</td>
+              <td>作为副标题或第 2 节小标题极佳；作主标对新用户略显抽象。</td>
+            </tr>
+            <tr>
+              <td>方案 C</td>
+              <td>少拿一次手机，多一点专注。</td>
+              <td>在电脑菜单栏完成米家开关、调光、调温与批量撤销。告别层层翻找房间。</td>
+              <td>情绪价值、防打扰</td>
+              <td>适合生活方式文案，技术工具属性稍弱。</td>
+            </tr>
+            <tr>
+              <td>方案 D</td>
+              <td>抬眼即见，敲字即控。</td>
+              <td>专为桌面打造的米家与 Home Assistant 快捷控制中心。支持拼音盲搜与语音撤销。</td>
+              <td>极客键盘流</td>
+              <td>过于偏向键盘极客，容易吓退仅需快捷开关的普通用户。</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: 演示分镜表 MEDIA_SHOTLIST.md          -->
+    <!-- ========================================== -->
+    <div id="tab-shotlist" class="tab-content">
+      <article class="markdown-body">
+        <h2>🎬 演示素材分镜脚本与录制清单 (MEDIA_SHOTLIST)</h2>
+        <p>为实机屏幕录制提供清晰、可逐秒参照的执行标准。建议帧率 12–14 fps，开头留白约 0.8s，结尾留白约 1.5s，确保自然循环不晃眼。</p>
+
+        <h3>核心分镜总览表</h3>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 80px;">动图</th>
+              <th>目标路径</th>
+              <th style="width: 70px;">时长</th>
+              <th>核心场景</th>
+              <th style="width: 110px;">优先级</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>GIF-01</strong></td>
+              <td><code>docs/assets/readme-v2/hero-keyboard.gif</code></td>
+              <td>~7s</td>
+              <td><strong>首屏核心：</strong> 键盘盲搜设备并极速开关，全程不碰鼠标</td>
+              <td><span class="badge-todo" style="background: var(--accent-red); color: white;">P0 首屏主图</span></td>
+            </tr>
+            <tr>
+              <td><strong>GIF-02</strong></td>
+              <td><code>docs/assets/readme-v2/voice-ptt.gif</code></td>
+              <td>~8s</td>
+              <td><strong>语音交互：</strong> 菜单栏按住说话，松手秒执行，显示本地耗时回执</td>
+              <td><span class="badge-todo" style="background: var(--accent-orange); color: black;">P0 核心</span></td>
+            </tr>
+            <tr>
+              <td><strong>GIF-03</strong></td>
+              <td><code>docs/assets/readme-v2/undo-all-off.gif</code></td>
+              <td>~9s</td>
+              <td><strong>安全撤销：</strong> 长按 0.6s 全关（排除插座），底部横幅一键撤销恢复</td>
+              <td><span class="badge-todo" style="background: var(--accent-orange); color: black;">P0 核心</span></td>
+            </tr>
+            <tr>
+              <td><strong>GIF-04</strong></td>
+              <td><code>docs/assets/readme-v2/automation-away.gif</code></td>
+              <td>~10s</td>
+              <td><strong>状态联动：</strong> 系统锁屏离开 Mac，书房灯自动关闭</td>
+              <td><span class="badge-todo" style="background: var(--accent-blue); color: white;">P1 特色</span></td>
+            </tr>
+            <tr>
+              <td><strong>GIF-05</strong></td>
+              <td><code>docs/assets/readme-v2/sensor-chart.gif</code></td>
+              <td>~7s</td>
+              <td><strong>数据洞察：</strong> 点击展开温湿度 24h / 7d 折线图与悬停极值</td>
+              <td><span class="badge-todo" style="background: var(--bg-tertiary); color: var(--text-muted); border: 1px solid var(--border-color);">P2 可选</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h3>【GIF-01】Hero 键盘搜索与极速控制（P0 · 首页主图）</h3>
+        <p><strong>前置准备：</strong>受控灯（如台灯）当前处于<b>关闭状态</b>；MenuBarMijia 图标常驻菜单栏。</p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 110px;">时间轴</th>
+              <th>你的操作（键盘/鼠标）</th>
+              <th>屏幕画面与界面反馈</th>
+              <th style="width: 130px;">字幕建议</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>0.0s – 0.8s</code></td>
+              <td>保持静止，不按键。</td>
+              <td>干净的桌面与顶部菜单栏，画面安静沉稳。</td>
+              <td>（无字幕）</td>
+            </tr>
+            <tr>
+              <td><code>0.8s – 1.6s</code></td>
+              <td>键盘按下快捷键 <code>⌥M</code>。</td>
+              <td>菜单栏下方平滑弹出控制面板，搜索框自动聚焦，光标闪烁。</td>
+              <td><code>⌥M 呼出</code></td>
+            </tr>
+            <tr>
+              <td><code>1.6s – 2.8s</code></td>
+              <td>敲入拼音字母 <code>sftd</code>。</td>
+              <td>搜索框显示字符，列表即时过滤并高亮「书房台灯」，卡片呈选中态。</td>
+              <td><code>打字搜索</code></td>
+            </tr>
+            <tr>
+              <td><code>2.8s – 4.0s</code></td>
+              <td>键盘敲击回车 <code>Return ↵</code>。</td>
+              <td>台灯瞬间点亮，卡片高亮变色，菜单栏开启数/图标状态同步跳变。</td>
+              <td><code>回车开关</code></td>
+            </tr>
+            <tr>
+              <td><code>4.0s – 5.2s</code></td>
+              <td>键盘再次按下 <code>⌥M</code>（或 <code>Esc</code>）。</td>
+              <td>面板平滑收起，视线重回清爽桌面。</td>
+              <td>（无字幕）</td>
+            </tr>
+            <tr>
+              <td><code>5.2s – 7.0s</code></td>
+              <td>桌面保持静止 1.8 秒。</td>
+              <td>菜单栏图标显示已开启状态，为循环留足阅读时间。</td>
+              <td>（自然循环）</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h3>【GIF-02】按住说话，松手执行与执行回执（P0）</h3>
+        <p><strong>前置准备：</strong>设备（如台灯）当前处于开启的普通日光状态。</p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 110px;">时间轴</th>
+              <th>你的操作（键盘/鼠标）</th>
+              <th>屏幕画面与界面反馈</th>
+              <th style="width: 130px;">字幕建议</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>0.0s – 1.0s</code></td>
+              <td>光标移至菜单栏图标，<b>按住左键不放</b>（或长按 <code>⌥M</code>）。</td>
+              <td>面板弹出，顶部指令栏展开，麦克风波形指示器开始实时律动（监听中）。</td>
+              <td><code>按住说话</code></td>
+            </tr>
+            <tr>
+              <td><code>1.0s – 3.2s</code></td>
+              <td>自然说出：“<b>把书房灯切到月光模式</b>”。</td>
+              <td>指令框实时打字般浮现文字：“把书房灯切到月光模式”。</td>
+              <td>（展示口令）</td>
+            </tr>
+            <tr>
+              <td><code>3.2s – 4.2s</code></td>
+              <td><b>松开鼠标左键</b>（或松开热键）。</td>
+              <td>监听瞬间停止，状态变为执行中。</td>
+              <td><code>松手即执行</code></td>
+            </tr>
+            <tr>
+              <td><code>4.2s – 6.2s</code></td>
+              <td>等待界面响应。</td>
+              <td>台灯卡片切入月光模式，输入框右侧浮现绿色 <code>⚡ 本地 · 12ms</code> 回执。</td>
+              <td><code>秒级解析 · 零延迟</code></td>
+            </tr>
+            <tr>
+              <td><code>6.2s – 8.2s</code></td>
+              <td>保持面板展开静止 2 秒。</td>
+              <td>读者能清晰看清执行回执与设备状态变化。</td>
+              <td>（静止停留）</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h3>【GIF-03】批量全关、安全排除与即刻撤销（P0）</h3>
+        <p><strong>前置准备：</strong>当前房间开启 3–4 台设备（2 盏灯、1 台风扇、1 个智能插座），插座已锁定保护。</p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 110px;">时间轴</th>
+              <th>你的操作（键盘/鼠标）</th>
+              <th>屏幕画面与界面反馈</th>
+              <th style="width: 130px;">字幕建议</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>0.0s – 1.2s</code></td>
+              <td>面板展开，当前房间多设备处于开启高亮状态。</td>
+              <td>清楚看到灯、风扇与带锁的智能插座均通电运行。</td>
+              <td>（多设备运行中）</td>
+            </tr>
+            <tr>
+              <td><code>1.2s – 2.2s</code></td>
+              <td>光标移至右上角「全关」，<b>按住左键持续 0.6 秒</b>。</td>
+              <td>按钮出现充能动效，文案提示「全关 · 书房 (3)」，插座被安全排除。</td>
+              <td><code>按住 0.6 秒防误触</code></td>
+            </tr>
+            <tr>
+              <td><code>2.2s – 3.8s</code></td>
+              <td>0.6 秒倒计时满，触发执行。</td>
+              <td>灯与风扇关闭；插座依然通电；底部平滑弹出带倒计时条的「撤销横幅」。</td>
+              <td><code>插座受保护 · 撤销横幅浮现</code></td>
+            </tr>
+            <tr>
+              <td><code>3.8s – 5.2s</code></td>
+              <td>光标点击横幅右侧的「<b>撤销</b>」按钮。</td>
+              <td>按钮响应点击，横幅变为「已恢复」。</td>
+              <td><code>点击一键撤销</code></td>
+            </tr>
+            <tr>
+              <td><code>5.2s – 7.2s</code></td>
+              <td>观察设备卡片状态。</td>
+              <td>刚才被关掉的灯和风扇原位重新点亮，精准恢复原本的亮度与模式。</td>
+              <td><code>原状态精准复原</code></td>
+            </tr>
+            <tr>
+              <td><code>7.2s – 9.0s</code></td>
+              <td>静止停留 1.8 秒。</td>
+              <td>供读者完整消化全过程。</td>
+              <td>（自然循环）</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h3>【GIF-04】Mac 屏幕状态与锁屏自动化联动（P1）</h3>
+        <p><strong>前置准备：</strong>设置中配置好「离开 Mac 时 ➔ 关闭书房台灯」；台灯此时处于<b>开启状态</b>。</p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 110px;">时间轴</th>
+              <th>你的操作（键盘/鼠标）</th>
+              <th>屏幕画面与界面反馈</th>
+              <th style="width: 130px;">字幕建议</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>0.0s – 2.0s</code></td>
+              <td>展示自动化设置后切换到桌面。</td>
+              <td>规则明确标注“离开 Mac ➔ 关闭书房台灯”，设备灯正开着。</td>
+              <td><code>自设自动化规则</code></td>
+            </tr>
+            <tr>
+              <td><code>2.0s – 3.5s</code></td>
+              <td>点击苹果菜单「锁定屏幕」（或按 <code>^⌘Q</code>）。</td>
+              <td>屏幕平滑切至 macOS 锁屏壁纸界面，系统进入锁定状态。</td>
+              <td><code>锁屏离席</code></td>
+            </tr>
+            <tr>
+              <td><code>3.5s – 5.5s</code></td>
+              <td>敲击键盘或 Touch ID 快速解锁重返桌面。</td>
+              <td>屏幕唤醒解锁，重回桌面。</td>
+              <td><code>解锁重回桌面</code></td>
+            </tr>
+            <tr>
+              <td><code>5.5s – 7.5s</code></td>
+              <td>快捷键 <code>⌥M</code> 呼出控制面板。</td>
+              <td>面板展开：书房台灯已经处于<b>关闭状态</b>，底部显示锁屏执行成功记录。</td>
+              <td><code>台灯已自动关闭</code></td>
+            </tr>
+            <tr>
+              <td><code>7.5s – 10.0s</code></td>
+              <td>保持面板静止停留 2.5 秒。</td>
+              <td>确认自动化真实生效。</td>
+              <td>（自然循环）</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: 事实核查表 FACT_CHECK.md              -->
+    <!-- ========================================== -->
+    <div id="tab-factcheck" class="tab-content">
+      <article class="markdown-body">
+        <h2>🛡️ 关键产品事实与红线核查表 (FACT_CHECK)</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>声明要点</th>
+              <th>核查结论</th>
+              <th>事实证据与来源</th>
+              <th>平台边界与说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>最新正式版为 v1.1.4</strong></td>
+              <td><span style="color: var(--accent-green); font-weight: 600;">已核实</span></td>
+              <td>VERSION 文件为 1.1.4；GitHub Releases 显示 4 小时前发布 v1.1.4 产物。</td>
+              <td>全平台</td>
+            </tr>
+            <tr>
+              <td><strong>全屋断网可用 / 局域网直连</strong></td>
+              <td><span style="color: var(--accent-red); font-weight: 600;">严禁宣传</span></td>
+              <td>ADR-0007 明确决定 miIO 局域网直连暂不推进；米家云直连必须联网。</td>
+              <td>全平台</td>
+            </tr>
+            <tr>
+              <td><strong>Home Assistant 接入</strong></td>
+              <td><span style="color: var(--accent-orange); font-weight: 600;">仅 macOS</span></td>
+              <td>macOS 具备纯 Swift HA WebSocket；Windows 版目前不支持 HA。</td>
+              <td>仅 macOS 14+</td>
+            </tr>
+            <tr>
+              <td><strong>按住说话与耗时回执</strong></td>
+              <td><span style="color: var(--accent-green); font-weight: 600;">已核实</span></td>
+              <td>PR #89, #95 修复按住手势；PR #94 落地本地/AI 执行回执。</td>
+              <td>仅 macOS 14+ (v1.1.4)</td>
+            </tr>
+            <tr>
+              <td><strong>温湿度折线趋势图</strong></td>
+              <td><span style="color: var(--accent-green); font-weight: 600;">已核实</span></td>
+              <td>PR #90, #92 在 macOS 端落地 24h / 7d 折线图；Windows 暂为基础读数。</td>
+              <td>仅 macOS 14+</td>
+            </tr>
+            <tr>
+              <td><strong>全关防误触与插座排除</strong></td>
+              <td><span style="color: var(--accent-green); font-weight: 600;">已核实</span></td>
+              <td>按住 0.6 秒触发；插座与扫地机默认不加入全关动作。</td>
+              <td>macOS & Windows 11</td>
+            </tr>
+            <tr>
+              <td><strong>Apple Developer 官方公证</strong></td>
+              <td><span style="color: var(--accent-red); font-weight: 600;">严禁宣传</span></td>
+              <td>个人项目未购买付费开发者计划；首次运行需在系统设置中放行。</td>
+              <td>仅 macOS</td>
+            </tr>
+            <tr>
+              <td><strong>Windows Authenticode 签名</strong></td>
+              <td><span style="color: var(--accent-red); font-weight: 600;">未签名</span></td>
+              <td>Release 明确披露未做商业代码签名，首次安装 SmartScreen 会弹出提示。</td>
+              <td>仅 Windows 11</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 6: 验收自评与待办 README_QA.md           -->
+    <!-- ========================================== -->
+    <div id="tab-qa" class="tab-content">
+      <article class="markdown-body">
+        <h2>📋 验收自评与待办 (README_QA)</h2>
+        <p>已剔除非必要的防御性免责套话，语言自然干净，聚焦实机直接录屏呈现。</p>
+      </article>
+    </div>
+
+  </main>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
+
+      const targetContent = document.getElementById('tab-' + tabId);
+      if (targetContent) {
+        targetContent.classList.add('active');
+      }
+
+      event.target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    }
+
+    function copyCode(btn) {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const originalText = btn.innerText;
+        btn.innerText = '已复制！';
+        setTimeout(() => { btn.innerText = originalText; }, 1800);
+      });
+    }
+  </script>
+</body>
+</html>

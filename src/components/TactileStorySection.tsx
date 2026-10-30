@@ -4,12 +4,6 @@ import {
   RotateCcw,
   Lock,
   Unlock,
-  Sun,
-  Moon,
-  Sparkles,
-  Check,
-  ShieldCheck,
-  CornerDownLeft,
 } from 'lucide-react';
 import { SmartDevice, RoomLightingSummary, LightMode } from '../utils/mijiaEngine';
 
@@ -35,9 +29,7 @@ interface TactileStorySectionProps {
 
 export const TactileStorySection: React.FC<TactileStorySectionProps> = ({
   devices,
-  lighting,
   onToggleDevice,
-  onUpdateLight,
   onExecuteCommand,
   onSimulateAutomation,
   onAllLightsOff,
@@ -53,9 +45,9 @@ export const TactileStorySection: React.FC<TactileStorySectionProps> = ({
     sftd: {
       code: 'sftd',
       deviceId: 'study-desk-lamp',
-      name: '书房台灯 Pro',
+      name: '书房吸顶灯',
       room: '书房',
-      desc: '82% · 4100K 阅读光',
+      desc: '100% · 4600K 阅读光',
     },
     pmgd: {
       code: 'pmgd',
@@ -93,13 +85,13 @@ export const TactileStorySection: React.FC<TactileStorySectionProps> = ({
 
   return (
     <section id="story" className="relative py-20 md:py-28">
-      <div className="max-w-[1040px] mx-auto px-6">
-        {/* Intro Thread Header */}
+      <div className="max-w-[1000px] mx-auto px-6">
+        {/* Minimalist Intro Header */}
         <div className="max-w-xl mb-16 md:mb-24 space-y-3">
-          <div className="text-xs font-mono uppercase tracking-widest text-amber-600 dark:text-amber-400">
-            Why MenuBarMijia
+          <div className="text-xs font-mono uppercase tracking-widest text-[#007AFF] dark:text-sky-400">
+            Liquid Glass Workflow
           </div>
-          <h2 className="font-display font-bold tracking-tight text-slate-950 dark:text-white text-3xl sm:text-4xl text-balance">
+          <h2 className="font-display font-bold tracking-tight text-slate-900 dark:text-white text-3xl sm:text-4xl text-balance">
             少拿一次手机，多一点专注。
           </h2>
           <p className="text-[15px] leading-relaxed text-slate-500 dark:text-slate-400">
@@ -107,66 +99,65 @@ export const TactileStorySection: React.FC<TactileStorySectionProps> = ({
           </p>
         </div>
 
-        {/* THE NARRATIVE THREAD: A continuous vertical luminous line connecting 3 tactile chapters */}
-        <div className="relative pl-6 sm:pl-12 border-l border-slate-300/80 dark:border-slate-800 space-y-24 md:space-y-32">
+        {/* Continuous Vertical Glass Spine */}
+        <div className="relative pl-6 sm:pl-12 border-l border-sky-500/20 dark:border-sky-400/20 space-y-20 md:space-y-28">
           {/* ================================================================= */}
-          {/* CHAPTER 01: 手不离键盘，敲字即找灯 (GIF-01 Interactive Stage)       */}
+          {/* CHAPTER 01: 手不离键盘，敲字即找灯                                  */}
           {/* ================================================================= */}
           <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* Glowing Node on the Spine */}
             <div
               aria-hidden="true"
-              className="absolute -left-[31px] sm:-left-[55px] top-1.5 w-3.5 h-3.5 rounded-full bg-amber-400 ring-4 ring-[#FAF9F5] dark:ring-[#090C12]"
+              className="absolute -left-[31px] sm:-left-[55px] top-2 w-3.5 h-3.5 rounded-full bg-[#007AFF] shadow-[0_0_12px_rgba(0,122,255,0.55)] ring-4 ring-white/80 dark:ring-slate-900"
             />
 
             <div className="lg:col-span-5 space-y-3">
-              <div className="font-mono text-xs font-semibold text-amber-600 dark:text-amber-400">
+              <div className="font-mono text-xs font-semibold text-[#007AFF] dark:text-sky-400">
                 01 · KEYBOARD FLOW
               </div>
-              <h3 className="font-display font-bold text-2xl sm:text-3xl text-slate-950 dark:text-white tracking-tight">
+              <h3 className="font-display font-bold text-2xl sm:text-3xl text-slate-900 dark:text-white tracking-tight">
                 手不离键盘，打字找灯。
               </h3>
               <p className="text-sm sm:text-[15px] leading-relaxed text-slate-600 dark:text-slate-300">
-                按 <code className="font-mono text-xs px-1.5 py-0.5 rounded bg-slate-200/70 dark:bg-slate-800">⌥M</code> 呼出，敲入拼音首字母直接定位设备，回车开关，左右方向键微调亮度色温。全程免切中文输入法。
+                按 <code className="font-mono text-xs px-1.5 py-0.5 rounded-md bg-white/80 dark:bg-white/10 border border-slate-200/70 dark:border-white/15">⌥M</code> 呼出，敲入拼音首字母直接定位设备，回车开关，左右方向键微调亮度色温。全程免切中文输入法。
               </p>
             </div>
 
-            {/* Interactive Pinyin Card */}
-            <div className="lg:col-span-7 p-6 rounded-[28px] bg-white/90 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-lg space-y-5">
+            {/* Unified Liquid Glass Interactive Card (No harsh black boxes) */}
+            <div className="lg:col-span-7 p-6 rounded-[30px] liquid-glass-surface space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-400 font-mono">点击拼音测试盲搜:</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">点击拼音测试盲搜:</span>
                   {(['sftd', 'pmgd', 'ktxdd'] as const).map((code) => (
                     <button
                       key={code}
                       type="button"
                       onClick={() => setSelectedPinyin(code)}
-                      className={`px-3 py-1 rounded-xl font-mono text-xs font-semibold transition-all cursor-pointer ${
+                      className={`px-3 py-1 rounded-full font-mono text-xs font-semibold transition-all cursor-pointer ${
                         selectedPinyin === code
-                          ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950 shadow-xs'
-                          : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
+                          ? 'bg-[#007AFF] text-white shadow-[0_4px_12px_rgba(0,122,255,0.3)]'
+                          : 'bg-white/70 dark:bg-white/10 text-slate-600 dark:text-slate-300 border border-white/80 dark:border-white/10 hover:bg-white'
                       }`}
                     >
                       {code}
                     </button>
                   ))}
                 </div>
-                <span className="font-mono text-[11px] text-emerald-600 dark:text-emerald-400">
+                <span className="font-mono text-[11px] text-[#007AFF] dark:text-sky-400">
                   免切输入法 · 即时命中
                 </span>
               </div>
 
-              {/* Simulated Spotlight Result Row */}
-              <div className="flex items-center justify-between gap-4 p-4 rounded-2xl bg-slate-950 text-white border border-slate-800">
+              {/* Frosted Glass Spotlight Result Row */}
+              <div className="flex items-center justify-between gap-4 p-4 rounded-2xl bg-white/75 dark:bg-white/8 border border-white/90 dark:border-white/12 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="px-2.5 py-1.5 rounded-xl bg-amber-400/20 border border-amber-400/40 font-mono text-sm font-bold text-amber-300">
+                  <div className="px-3 py-1.5 rounded-xl bg-[#007AFF]/12 border border-[#007AFF]/25 font-mono text-sm font-bold text-[#007AFF] dark:text-sky-300">
                     {currentPinyinTarget.code}
                   </div>
                   <div className="min-w-0">
-                    <div className="font-display font-bold text-sm truncate">
+                    <div className="font-display font-bold text-sm text-slate-900 dark:text-white truncate">
                       {currentPinyinTarget.name}
                     </div>
-                    <div className="text-xs text-slate-400 font-mono truncate">
+                    <div className="text-xs text-slate-500 dark:text-slate-400 font-mono truncate">
                       {currentPinyinTarget.room} · {targetDeviceObj.on ? '当前已开启' : '当前已关闭'}
                     </div>
                   </div>
@@ -175,7 +166,7 @@ export const TactileStorySection: React.FC<TactileStorySectionProps> = ({
                 <button
                   type="button"
                   onClick={() => onToggleDevice(currentPinyinTarget.deviceId)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl font-mono text-xs font-semibold bg-amber-400 text-slate-950 hover:bg-amber-300 transition-colors cursor-pointer shrink-0"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-mono text-xs font-semibold bg-[#007AFF] text-white hover:bg-[#0071E3] shadow-[0_4px_12px_rgba(0,122,255,0.28)] transition-all cursor-pointer shrink-0 whitespace-nowrap"
                 >
                   <span>Return ↵</span>
                   <span>{targetDeviceObj.on ? '关灯' : '开灯'}</span>
@@ -185,19 +176,19 @@ export const TactileStorySection: React.FC<TactileStorySectionProps> = ({
           </div>
 
           {/* ================================================================= */}
-          {/* CHAPTER 02: 按住说话，松手执行 (GIF-02 Push-to-Talk & 12ms Receipt) */}
+          {/* CHAPTER 02: 按住说话，松手执行                                      */}
           {/* ================================================================= */}
           <div id="voice" className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div
               aria-hidden="true"
-              className="absolute -left-[31px] sm:-left-[55px] top-1.5 w-3.5 h-3.5 rounded-full bg-emerald-400 ring-4 ring-[#FAF9F5] dark:ring-[#090C12]"
+              className="absolute -left-[31px] sm:-left-[55px] top-2 w-3.5 h-3.5 rounded-full bg-[#007AFF] shadow-[0_0_12px_rgba(0,122,255,0.55)] ring-4 ring-white/80 dark:ring-slate-900"
             />
 
             <div className="lg:col-span-5 space-y-3">
-              <div className="font-mono text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+              <div className="font-mono text-xs font-semibold text-[#007AFF] dark:text-sky-400">
                 02 · PUSH-TO-TALK VOICE
               </div>
-              <h3 className="font-display font-bold text-2xl sm:text-3xl text-slate-950 dark:text-white tracking-tight">
+              <h3 className="font-display font-bold text-2xl sm:text-3xl text-slate-900 dark:text-white tracking-tight">
                 按住说话，松手即执行。
               </h3>
               <p className="text-sm sm:text-[15px] leading-relaxed text-slate-600 dark:text-slate-300">
@@ -205,24 +196,24 @@ export const TactileStorySection: React.FC<TactileStorySectionProps> = ({
               </p>
             </div>
 
-            {/* Interactive Voice Receipt Stage */}
-            <div className="lg:col-span-7 p-6 rounded-[28px] bg-white/90 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-lg space-y-4">
-              {/* Live Voice Bar Display */}
-              <div className="flex items-center justify-between gap-3 p-4 rounded-2xl bg-slate-950 text-white border border-slate-800">
+            {/* Unified Liquid Glass Voice Card */}
+            <div className="lg:col-span-7 p-6 rounded-[30px] liquid-glass-surface space-y-4">
+              {/* Soft Frosted Voice Receipt Bar */}
+              <div className="flex items-center justify-between gap-3 p-4 rounded-2xl bg-white/75 dark:bg-white/8 border border-white/90 dark:border-white/12 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
                 <div className="flex items-center gap-3 min-w-0">
-                  <span className="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 shrink-0">
+                  <span className="w-8 h-8 rounded-full bg-[#007AFF]/12 border border-[#007AFF]/25 flex items-center justify-center text-[#007AFF] dark:text-sky-300 shrink-0">
                     <Mic className="w-4 h-4" />
                   </span>
-                  <span className="font-medium text-sm truncate">
+                  <span className="font-semibold text-sm text-slate-900 dark:text-white truncate">
                     “{activeVoiceCmd}”
                   </span>
                 </div>
-                <span className="px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-400/35 text-emerald-300 font-mono text-xs font-semibold shrink-0 tabular-nums">
+                <span className="px-3 py-1 rounded-full bg-[#007AFF]/12 border border-[#007AFF]/25 text-[#007AFF] dark:text-sky-300 font-mono text-xs font-semibold shrink-0 tabular-nums whitespace-nowrap">
                   {voiceReceipt}
                 </span>
               </div>
 
-              {/* 3 Clickable Voice Phrases that immediately drive the room light */}
+              {/* 3 Clickable Liquid Glass Voice Phrases */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 {[
                   {
@@ -247,12 +238,12 @@ export const TactileStorySection: React.FC<TactileStorySectionProps> = ({
                     onClick={() => handleVoicePhrase(item.phrase, item.ms)}
                     className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                       activeVoiceCmd === item.phrase
-                        ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950 border-slate-900 dark:border-white'
-                        : 'bg-slate-50 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 hover:border-amber-400'
+                        ? 'bg-[#007AFF] text-white border-[#007AFF] shadow-[0_8px_20px_-6px_rgba(0,122,255,0.45)]'
+                        : 'bg-white/65 dark:bg-white/6 text-slate-800 dark:text-slate-200 border-white/85 dark:border-white/10 hover:bg-white/90 dark:hover:bg-white/12'
                     }`}
                   >
                     <div className="text-xs font-semibold truncate">「{item.phrase}」</div>
-                    <div className="text-[11px] opacity-65 font-mono mt-1">{item.tag}</div>
+                    <div className="text-[11px] opacity-75 font-mono mt-1">{item.tag}</div>
                   </button>
                 ))}
               </div>
@@ -260,19 +251,19 @@ export const TactileStorySection: React.FC<TactileStorySectionProps> = ({
           </div>
 
           {/* ================================================================= */}
-          {/* CHAPTER 03: 跟上工作状态 & 能撤销才敢放心关 (GIF-03 & GIF-04)        */}
+          {/* CHAPTER 03: 跟上工作状态 & 能撤销才敢放心关                         */}
           {/* ================================================================= */}
           <div id="safety" className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div
               aria-hidden="true"
-              className="absolute -left-[31px] sm:-left-[55px] top-1.5 w-3.5 h-3.5 rounded-full bg-sky-400 ring-4 ring-[#FAF9F5] dark:ring-[#090C12]"
+              className="absolute -left-[31px] sm:-left-[55px] top-2 w-3.5 h-3.5 rounded-full bg-[#007AFF] shadow-[0_0_12px_rgba(0,122,255,0.55)] ring-4 ring-white/80 dark:ring-slate-900"
             />
 
             <div className="lg:col-span-5 space-y-3">
-              <div className="font-mono text-xs font-semibold text-sky-600 dark:text-sky-400">
+              <div className="font-mono text-xs font-semibold text-[#007AFF] dark:text-sky-400">
                 03 · WORKFLOW & UNDO SAFETY
               </div>
-              <h3 className="font-display font-bold text-2xl sm:text-3xl text-slate-950 dark:text-white tracking-tight">
+              <h3 className="font-display font-bold text-2xl sm:text-3xl text-slate-900 dark:text-white tracking-tight">
                 锁屏自动关灯，误触一键撤销。
               </h3>
               <p className="text-sm sm:text-[15px] leading-relaxed text-slate-600 dark:text-slate-300">
@@ -280,22 +271,22 @@ export const TactileStorySection: React.FC<TactileStorySectionProps> = ({
               </p>
             </div>
 
-            {/* Dual Interactive Stage: Lock Screen Automation + Safe All-Off with Undo */}
+            {/* Dual Liquid Glass Cards */}
             <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Card A: Mac Screen Lock Trigger */}
-              <div className="p-5 rounded-[26px] bg-white/90 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-lg flex flex-col justify-between space-y-4">
+              <div className="p-5 rounded-[28px] liquid-glass-surface flex flex-col justify-between space-y-4">
                 <div>
-                  <div className="flex items-center justify-between text-xs font-mono text-slate-400 mb-2">
+                  <div className="flex items-center justify-between text-xs font-mono text-slate-500 dark:text-slate-400 mb-2">
                     <span>MAC EVENT TRIGGER</span>
                     <span>^⌘Q</span>
                   </div>
-                  <div className="font-display font-bold text-lg text-slate-950 dark:text-white">
+                  <div className="font-display font-bold text-lg text-slate-900 dark:text-white">
                     {macLocked ? 'Mac 已锁屏离席' : 'Mac 唤醒工作中'}
                   </div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                     {macLocked
-                      ? '书房台灯已随锁屏自动关闭，网页进入暗场。'
-                      : '解锁回到工位，书房台灯恢复 4100K 阅读光。'}
+                      ? '书房灯已随锁屏自动关闭，进入暗场。'
+                      : '解锁回到工位，书房灯恢复温暖阅读光。'}
                   </p>
                 </div>
 
@@ -303,10 +294,10 @@ export const TactileStorySection: React.FC<TactileStorySectionProps> = ({
                   <button
                     type="button"
                     onClick={() => handleMacStateToggle(true)}
-                    className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
+                    className={`flex-1 py-2 px-3 rounded-full text-xs font-semibold inline-flex items-center justify-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                       macLocked
-                        ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                        ? 'bg-[#007AFF] text-white shadow-[0_4px_12px_rgba(0,122,255,0.3)]'
+                        : 'bg-white/75 dark:bg-white/10 text-slate-700 dark:text-slate-200 border border-white/85 dark:border-white/10 hover:bg-white'
                     }`}
                   >
                     <Lock className="w-3.5 h-3.5 shrink-0" />
@@ -315,10 +306,10 @@ export const TactileStorySection: React.FC<TactileStorySectionProps> = ({
                   <button
                     type="button"
                     onClick={() => handleMacStateToggle(false)}
-                    className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
+                    className={`flex-1 py-2 px-3 rounded-full text-xs font-semibold inline-flex items-center justify-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                       !macLocked
-                        ? 'bg-amber-400 text-slate-950'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                        ? 'bg-[#007AFF] text-white shadow-[0_4px_12px_rgba(0,122,255,0.3)]'
+                        : 'bg-white/75 dark:bg-white/10 text-slate-700 dark:text-slate-200 border border-white/85 dark:border-white/10 hover:bg-white'
                     }`}
                   >
                     <Unlock className="w-3.5 h-3.5 shrink-0" />
@@ -327,14 +318,14 @@ export const TactileStorySection: React.FC<TactileStorySectionProps> = ({
                 </div>
               </div>
 
-              {/* Card B: 0.6s All-Off & Instant Undo */}
-              <div className="p-5 rounded-[26px] bg-white/90 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-lg flex flex-col justify-between space-y-4">
+              {/* Card B: Safe All-Off & Instant Undo */}
+              <div className="p-5 rounded-[28px] liquid-glass-surface flex flex-col justify-between space-y-4">
                 <div>
-                  <div className="flex items-center justify-between text-xs font-mono text-emerald-600 dark:text-emerald-400 mb-2">
+                  <div className="flex items-center justify-between text-xs font-mono text-[#007AFF] dark:text-sky-400 mb-2">
                     <span>SAFE ALL-OFF</span>
                     <span>🔒 插座受保护</span>
                   </div>
-                  <div className="font-display font-bold text-lg text-slate-950 dark:text-white">
+                  <div className="font-display font-bold text-lg text-slate-900 dark:text-white">
                     能撤销，才敢放心全关
                   </div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -346,7 +337,7 @@ export const TactileStorySection: React.FC<TactileStorySectionProps> = ({
                   <button
                     type="button"
                     onClick={onUndo}
-                    className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold bg-amber-400 text-slate-950 hover:bg-amber-300 inline-flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className="w-full py-2.5 px-4 rounded-full text-xs font-semibold bg-[#007AFF] text-white hover:bg-[#0071E3] shadow-[0_4px_14px_rgba(0,122,255,0.32)] inline-flex items-center justify-center gap-2 transition-all cursor-pointer"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
                     <span>点击一键撤销恢复 ({undoState.remainingSec}s)</span>
@@ -355,9 +346,9 @@ export const TactileStorySection: React.FC<TactileStorySectionProps> = ({
                   <button
                     type="button"
                     onClick={onAllLightsOff}
-                    className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold bg-red-500/15 hover:bg-red-500/25 text-red-600 dark:text-red-300 border border-red-500/25 transition-colors cursor-pointer"
+                    className="w-full py-2.5 px-4 rounded-full text-xs font-semibold bg-[#EA6A12]/12 hover:bg-[#EA6A12]/20 text-[#EA6A12] dark:text-orange-300 border border-[#EA6A12]/25 transition-colors cursor-pointer"
                   >
-                    测试全关照明 (插座保持通电)
+                    ⏻ 测试全关照明 (插座保持通电)
                   </button>
                 )}
               </div>

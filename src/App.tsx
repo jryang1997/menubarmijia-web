@@ -222,59 +222,59 @@ export default function App() {
       data-kelvin={lighting.weightedKelvin}
       className={`min-h-screen transition-colors duration-500 ${
         isRoomBright
-          ? 'bg-[#FAF9F5] text-slate-900 bg-dot-grid-light'
-          : 'bg-[#090C12] text-slate-100 bg-dot-grid-dark'
+          ? 'bg-[#F4F8FC] text-slate-900 bg-dot-grid-light'
+          : 'bg-[#080D16] text-slate-100 bg-dot-grid-dark'
       }`}
       style={{
         backgroundImage: lighting.anyLightOn
-          ? `radial-gradient(circle at 50% 22%, rgba(${lighting.ambientRgb.r}, ${lighting.ambientRgb.g}, ${lighting.ambientRgb.b}, ${(0.14 + (lighting.averageBrightness / 100) * 0.28).toFixed(3)}) 0%, transparent 65%), ${
+          ? `radial-gradient(circle at 50% 24%, rgba(${lighting.ambientRgb.r}, ${lighting.ambientRgb.g}, ${lighting.ambientRgb.b}, ${(0.14 + (lighting.averageBrightness / 100) * 0.24).toFixed(3)}) 0%, rgba(125, 211, 252, 0.14) 45%, transparent 72%), ${
               isRoomBright
-                ? 'radial-gradient(rgba(15, 23, 42, 0.09) 1.25px, transparent 1.25px)'
-                : 'radial-gradient(rgba(248, 250, 252, 0.08) 1.25px, transparent 1.25px)'
+                ? 'radial-gradient(rgba(15, 23, 42, 0.06) 1.25px, transparent 1.25px)'
+                : 'radial-gradient(rgba(248, 250, 252, 0.07) 1.25px, transparent 1.25px)'
             }`
           : undefined,
         backgroundSize: lighting.anyLightOn ? '100% 100%, 24px 24px' : '24px 24px',
       }}
     >
       {/* Top Bar Contract: Strictly 1 row, 3 zones separated by gap-8 */}
-      <header className="sticky top-0 z-40 flex items-center justify-between gap-8 px-6 py-4 border-b border-slate-200/70 dark:border-slate-800/70 bg-white/75 dark:bg-slate-950/75 backdrop-blur-xl">
+      <header className="sticky top-0 z-40 flex items-center justify-between gap-8 px-6 py-3.5 border-b border-white/70 dark:border-white/10 bg-white/65 dark:bg-slate-900/65 backdrop-blur-2xl">
         {/* Zone 1: Single text element wordmark */}
         <a
           href="#hero"
-          className="text-lg font-display font-bold tracking-tight text-slate-950 dark:text-white whitespace-nowrap shrink-0"
+          className="text-lg font-display font-bold tracking-tight text-slate-900 dark:text-white whitespace-nowrap shrink-0"
         >
           MenuBarMijia
         </a>
 
-        {/* Zone 2: 4 concise single-line text navigation links */}
+        {/* Zone 2: 5 concise single-line text navigation links */}
         <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600 dark:text-slate-300">
           <a
             href="#hero"
-            className="hover:text-slate-950 dark:hover:text-white hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
+            className="hover:text-[#007AFF] dark:hover:text-sky-400 transition-colors whitespace-nowrap shrink-0"
           >
             交互体验
           </a>
           <a
             href="#story"
-            className="hover:text-slate-950 dark:hover:text-white hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
+            className="hover:text-[#007AFF] dark:hover:text-sky-400 transition-colors whitespace-nowrap shrink-0"
           >
             键盘找灯
           </a>
           <a
             href="#voice"
-            className="hover:text-slate-950 dark:hover:text-white hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
+            className="hover:text-[#007AFF] dark:hover:text-sky-400 transition-colors whitespace-nowrap shrink-0"
           >
             按住说话
           </a>
           <a
             href="#safety"
-            className="hover:text-slate-950 dark:hover:text-white hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
+            className="hover:text-[#007AFF] dark:hover:text-sky-400 transition-colors whitespace-nowrap shrink-0"
           >
             锁屏与撤销
           </a>
           <a
             href="#download"
-            className="hover:text-slate-950 dark:hover:text-white hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
+            className="hover:text-[#007AFF] dark:hover:text-sky-400 transition-colors whitespace-nowrap shrink-0"
           >
             下载 v1.1.4
           </a>
@@ -286,7 +286,7 @@ export default function App() {
             href="https://github.com/jryang1997/MenuBarMijia"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 text-xs font-semibold text-white bg-slate-950 dark:bg-white dark:text-slate-950 rounded-xl hover:opacity-90 transition-opacity whitespace-nowrap shrink-0"
+            className="px-4 py-2 text-xs font-semibold text-white bg-[#007AFF] hover:bg-[#0071E3] rounded-full shadow-[0_4px_14px_rgba(0,122,255,0.32),inset_0_1px_0_rgba(255,255,255,0.35)] transition-all whitespace-nowrap shrink-0"
           >
             ★ Star on GitHub
           </a>

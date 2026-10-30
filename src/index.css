@@ -3,9 +3,9 @@
 
 @layer base {
   :root {
-    --font-display: 'Plus Jakarta Sans', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif;
-    --font-sans: 'DM Sans', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif;
-    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --font-display: 'Plus Jakarta Sans', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", sans-serif;
+    --font-sans: 'DM Sans', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
   }
@@ -35,94 +35,158 @@
   text-wrap: balance;
 }
 
-/* Keyviz-inspired architectural dot grid */
+/* Subtle architectural dot grid */
 .bg-dot-grid-light {
-  background-image: radial-gradient(rgba(15, 23, 42, 0.11) 1.25px, transparent 1.25px);
+  background-image: radial-gradient(rgba(15, 23, 42, 0.065) 1.2px, transparent 1.2px);
   background-size: 24px 24px;
 }
 
 .bg-dot-grid-dark {
-  background-image: radial-gradient(rgba(248, 250, 252, 0.10) 1.25px, transparent 1.25px);
+  background-image: radial-gradient(rgba(248, 250, 252, 0.07) 1.2px, transparent 1.2px);
   background-size: 24px 24px;
 }
 
-/* Emil Kowalski tactile keycap 3D elevation */
-.keycap-3d-light {
+/* ==========================================================================
+   APPLE LIQUID GLASS (iOS 26 / macOS Tahoe Specular Refraction System)
+   ========================================================================== */
+.liquid-glass-surface {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(255, 255, 255, 0.48) 100%
+  );
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.82);
   box-shadow:
-    0 1px 0 0 rgba(255, 255, 255, 0.9) inset,
-    0 5px 0 0 #0f172a,
-    0 8px 20px -4px rgba(15, 23, 42, 0.18);
-  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 140ms cubic-bezier(0.16, 1, 0.3, 1);
+    0 1px 2px rgba(255, 255, 255, 0.9) inset,
+    0 -1px 2px rgba(255, 255, 255, 0.4) inset,
+    0 18px 42px -12px rgba(14, 30, 62, 0.08),
+    0 4px 12px -2px rgba(14, 30, 62, 0.04);
 }
 
-.keycap-3d-light:hover {
-  transform: translateY(-2px);
+.dark .liquid-glass-surface {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.11) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow:
-    0 1px 0 0 rgba(255, 255, 255, 0.95) inset,
-    0 7px 0 0 #0f172a,
-    0 12px 24px -4px rgba(15, 23, 42, 0.22);
+    0 1px 1.5px rgba(255, 255, 255, 0.22) inset,
+    0 -1px 2px rgba(255, 255, 255, 0.06) inset,
+    0 20px 48px -12px rgba(0, 0, 0, 0.45);
 }
 
-.keycap-3d-light:active,
-.keycap-3d-light[data-pressed="true"] {
-  transform: translateY(4px);
+/* True Circular Liquid Glass Bubble Sphere 🫧 (Pure radial-gradient inner rim + outer drop shadow) */
+.liquid-bubble {
+  background:
+    radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.38) 28%, transparent 56%),
+    radial-gradient(circle at 72% 78%, rgba(125, 211, 252, 0.42) 0%, transparent 58%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.35) 0%, rgba(224, 242, 254, 0.62) 72%, rgba(255, 255, 255, 0.90) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.92);
   box-shadow:
-    0 1px 0 0 rgba(255, 255, 255, 0.8) inset,
-    0 1px 0 0 #0f172a,
-    0 2px 6px -1px rgba(15, 23, 42, 0.15);
+    0 20px 44px -10px rgba(14, 42, 92, 0.12),
+    0 4px 12px -2px rgba(14, 116, 144, 0.07);
+  transition:
+    transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 280ms ease;
 }
 
-.keycap-3d-dark {
+.liquid-bubble:hover {
+  border-color: rgba(255, 255, 255, 1);
   box-shadow:
-    0 1px 0 0 rgba(255, 255, 255, 0.14) inset,
-    0 5px 0 0 #020617,
-    0 10px 24px -4px rgba(0, 0, 0, 0.65);
-  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 140ms cubic-bezier(0.16, 1, 0.3, 1);
+    0 26px 52px -10px rgba(14, 42, 92, 0.18),
+    0 6px 16px -4px rgba(14, 116, 144, 0.12);
 }
 
-.keycap-3d-dark:hover {
-  transform: translateY(-2px);
+.dark .liquid-bubble {
+  background:
+    radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 30%, transparent 56%),
+    radial-gradient(circle at 74% 80%, rgba(56, 189, 248, 0.24) 0%, transparent 60%),
+    radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.72) 0%, rgba(30, 41, 59, 0.82) 74%, rgba(148, 163, 184, 0.28) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.24);
   box-shadow:
-    0 1px 0 0 rgba(255, 255, 255, 0.2) inset,
-    0 7px 0 0 #020617,
-    0 14px 28px -4px rgba(0, 0, 0, 0.75);
+    0 24px 48px -10px rgba(0, 0, 0, 0.65),
+    0 4px 14px -2px rgba(56, 189, 248, 0.10);
 }
 
-.keycap-3d-dark:active,
-.keycap-3d-dark[data-pressed="true"] {
-  transform: translateY(4px);
+.dark .liquid-bubble:hover {
+  border-color: rgba(255, 255, 255, 0.38);
   box-shadow:
-    0 1px 0 0 rgba(255, 255, 255, 0.1) inset,
-    0 1px 0 0 #020617,
-    0 2px 6px -1px rgba(0, 0, 0, 0.5);
+    0 28px 56px -10px rgba(0, 0, 0, 0.75),
+    0 6px 18px -2px rgba(56, 189, 248, 0.18);
 }
 
-/* Custom Range Sliders for Brightness & Color Temp */
-input[type="range"].mijia-slider {
+/* Weightless Organic Floating Animations for the 4 Circular Bubbles */
+@keyframes floatBubbleA {
+  0%, 100% { transform: translate3d(0px, 0px, 0); }
+  33% { transform: translate3d(8px, -14px, 0); }
+  66% { transform: translate3d(-6px, -6px, 0); }
+}
+
+@keyframes floatBubbleB {
+  0%, 100% { transform: translate3d(0px, 0px, 0); }
+  38% { transform: translate3d(-10px, -12px, 0); }
+  72% { transform: translate3d(7px, -16px, 0); }
+}
+
+@keyframes floatBubbleC {
+  0%, 100% { transform: translate3d(0px, 0px, 0); }
+  45% { transform: translate3d(9px, -15px, 0); }
+  80% { transform: translate3d(-7px, -5px, 0); }
+}
+
+@keyframes floatBubbleD {
+  0%, 100% { transform: translate3d(0px, 0px, 0); }
+  35% { transform: translate3d(-9px, -13px, 0); }
+  70% { transform: translate3d(8px, -7px, 0); }
+}
+
+.animate-bubble-1 {
+  animation: floatBubbleA 7.2s ease-in-out infinite;
+}
+.animate-bubble-2 {
+  animation: floatBubbleB 8.4s ease-in-out infinite;
+}
+.animate-bubble-3 {
+  animation: floatBubbleC 7.8s ease-in-out infinite;
+}
+.animate-bubble-4 {
+  animation: floatBubbleD 8.8s ease-in-out infinite;
+}
+
+/* Authentic MenuBarMijia Thick Pill Sliders (matching image_624d4319.png) */
+input[type="range"].mijia-pill-slider {
   -webkit-appearance: none;
   appearance: none;
   background: transparent;
   cursor: pointer;
 }
 
-input[type="range"].mijia-slider::-webkit-slider-thumb {
+input[type="range"].mijia-pill-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  height: 20px;
-  width: 20px;
+  height: 24px;
+  width: 34px;
   border-radius: 9999px;
-  background: #ffffff;
-  border: 1.5px solid rgba(15, 23, 42, 0.18);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.22);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(245, 240, 232, 0.88) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 1px 2px rgba(255, 255, 255, 0.9) inset,
+    0 2px 6px rgba(15, 23, 42, 0.18);
   transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-input[type="range"].mijia-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.12);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+input[type="range"].mijia-pill-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 1px 2px rgba(255, 255, 255, 1) inset,
+    0 4px 10px rgba(15, 23, 42, 0.25);
 }
 
-input[type="range"].mijia-slider::-webkit-slider-thumb:active {
+input[type="range"].mijia-pill-slider::-webkit-slider-thumb:active {
   transform: scale(0.96);
 }
 

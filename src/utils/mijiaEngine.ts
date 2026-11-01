@@ -693,3 +693,27 @@ export function getLightModePreset(mode: LightMode): { brightness: number; color
       return { brightness: 50, colorTemp: 3500, labelZh: '电脑', labelEn: 'Computer' };
   }
 }
+
+export type ClientOS = 'macos' | 'windows' | 'other';
+
+export function detectClientOS(userAgent: string = '', platform: string = ''): ClientOS {
+  const combined = `${userAgent} ${platform}`.toLowerCase();
+  if (combined.includes('mac') || combined.includes('darwin')) {
+    return 'macos';
+  }
+  if (combined.includes('win')) {
+    return 'windows';
+  }
+  return 'other';
+}
+
+export function formatStarCount(count: number | null | undefined): string | null {
+  if (typeof count !== 'number' || !Number.isFinite(count) || count <= 0) {
+    return null;
+  }
+  if (count >= 1000) {
+    return `${(count / 1000).toFixed(1).replace(/\.0$/, '')}k`;
+  }
+  return String(Math.round(count));
+}
+

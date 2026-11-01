@@ -1,21 +1,33 @@
 import React, { useState } from 'react';
 import { Download, Copy, Check, Star } from 'lucide-react';
 import { OfficialLogo } from './OfficialLogo';
+import { ClientOS, formatStarCount } from '../utils/mijiaEngine';
+import { playBubbleSound } from '../utils/soundEffects';
 
 interface DownloadSectionProps {
   anyLightOn: boolean;
   ambientHex: string;
+  starCount: number | null;
+  latestVersion: string;
+  clientOS: ClientOS;
 }
 
 export const DownloadSection: React.FC<DownloadSectionProps> = ({
   anyLightOn,
   ambientHex,
+  starCount,
+  latestVersion,
+  clientOS,
 }) => {
   const [copied, setCopied] = useState<boolean>(false);
   const brewCommand = 'brew install --cask jryang1997/tap/menubarmijia';
+  const cleanVer = latestVersion.replace(/^v/, '');
+  const formattedStars = formatStarCount(starCount);
+  const isWindowsPreferred = clientOS === 'windows';
 
   const handleCopy = () => {
     navigator.clipboard?.writeText(brewCommand).catch(() => {});
+    playBubbleSound(true);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -29,7 +41,7 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
         {/* Minimalist Heading */}
         <div className="max-w-xl space-y-3">
           <div className="text-xs font-mono uppercase tracking-widest text-[#007AFF] dark:text-sky-400">
-            Download · v1.1.4
+            Download · {latestVersion}
           </div>
           <h2 className="font-display font-bold tracking-tight text-slate-900 dark:text-white text-3xl sm:text-4xl">
             免费开源，即刻装进菜单栏。
@@ -44,7 +56,7 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
           {/* Card 1: macOS 14+ */}
           <div className="p-7 rounded-[32px] liquid-glass-surface flex flex-col justify-between space-y-6">
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-3.5">
                   <OfficialLogo
                     className="w-10 h-10"
@@ -58,9 +70,16 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
                     </h3>
                   </div>
                 </div>
-                <span className="px-2.5 py-1 rounded-full bg-white/70 dark:bg-white/10 border border-white/80 dark:border-white/10 font-mono text-xs font-semibold text-slate-600 dark:text-slate-300">
-                  v1.1.4
-                </span>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  {!isWindowsPreferred && (
+                    <span className="px-2.5 py-1 rounded-full bg-[#007AFF]/14 text-[#007AFF] dark:text-sky-300 border border-[#007AFF]/25 text-[11px] font-semibold">
+                      当前系统推荐
+                    </span>
+                  )}
+                  <span className="px-2.5 py-1 rounded-full bg-white/70 dark:bg-white/10 border border-white/80 dark:border-white/10 font-mono text-xs font-semibold text-slate-600 dark:text-slate-300">
+                    {latestVersion}
+                  </span>
+                </div>
               </div>
 
               {/* Translucent Frosted Code Bar (replaces harsh black terminal block) */}
@@ -95,17 +114,21 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
               href="https://github.com/jryang1997/MenuBarMijia/releases/latest"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl text-sm font-semibold bg-[#007AFF] hover:bg-[#0071E3] text-white shadow-[0_8px_22px_-4px_rgba(0,122,255,0.38),inset_0_1px_0_rgba(255,255,255,0.35)] transition-all"
+              className={`w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl text-sm font-semibold transition-all ${
+                !isWindowsPreferred
+                  ? 'bg-[#007AFF] hover:bg-[#0071E3] text-white shadow-[0_8px_22px_-4px_rgba(0,122,255,0.38),inset_0_1px_0_rgba(255,255,255,0.35)]'
+                  : 'bg-white/85 dark:bg-white/12 hover:bg-white dark:hover:bg-white/18 text-slate-900 dark:text-white border border-white/90 dark:border-white/20 shadow-[0_6px_18px_-4px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]'
+              }`}
             >
               <Download className="w-4 h-4" />
-              <span>下载 MenuBarMijia-1.1.4.dmg</span>
+              <span>下载 MenuBarMijia-{cleanVer}.dmg</span>
             </a>
           </div>
 
           {/* Card 2: Windows 11 */}
           <div className="p-7 rounded-[32px] liquid-glass-surface flex flex-col justify-between space-y-6">
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-3.5">
                   <OfficialLogo
                     className="w-10 h-10"
@@ -119,13 +142,20 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
                     </h3>
                   </div>
                 </div>
-                <span className="px-2.5 py-1 rounded-full bg-white/70 dark:bg-white/10 border border-white/80 dark:border-white/10 font-mono text-xs font-semibold text-slate-600 dark:text-slate-300">
-                  v1.1.4
-                </span>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  {isWindowsPreferred && (
+                    <span className="px-2.5 py-1 rounded-full bg-[#007AFF]/14 text-[#007AFF] dark:text-sky-300 border border-[#007AFF]/25 text-[11px] font-semibold">
+                      当前系统推荐
+                    </span>
+                  )}
+                  <span className="px-2.5 py-1 rounded-full bg-white/70 dark:bg-white/10 border border-white/80 dark:border-white/10 font-mono text-xs font-semibold text-slate-600 dark:text-slate-300">
+                    {latestVersion}
+                  </span>
+                </div>
               </div>
 
               <div className="p-3.5 rounded-2xl bg-white/75 dark:bg-white/8 border border-white/90 dark:border-white/12 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] font-mono text-xs text-slate-700 dark:text-slate-300 truncate">
-                MenuBarMijia-1.1.4-windows-x64-setup.exe / .msi
+                MenuBarMijia-{cleanVer}-windows-x64-setup.exe / .msi
               </div>
 
               <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
@@ -137,9 +167,13 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
               href="https://github.com/jryang1997/MenuBarMijia/releases/latest"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl text-sm font-semibold bg-white/85 dark:bg-white/12 hover:bg-white dark:hover:bg-white/18 text-slate-900 dark:text-white border border-white/90 dark:border-white/20 shadow-[0_6px_18px_-4px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] transition-all"
+              className={`w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl text-sm font-semibold transition-all ${
+                isWindowsPreferred
+                  ? 'bg-[#007AFF] hover:bg-[#0071E3] text-white shadow-[0_8px_22px_-4px_rgba(0,122,255,0.38),inset_0_1px_0_rgba(255,255,255,0.35)]'
+                  : 'bg-white/85 dark:bg-white/12 hover:bg-white dark:hover:bg-white/18 text-slate-900 dark:text-white border border-white/90 dark:border-white/20 shadow-[0_6px_18px_-4px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]'
+              }`}
             >
-              <Download className="w-4 h-4 text-[#007AFF] dark:text-sky-400" />
+              <Download className={`w-4 h-4 ${isWindowsPreferred ? 'text-white' : 'text-[#007AFF] dark:text-sky-400'}`} />
               <span>下载 Windows 11 安装包 (.exe)</span>
             </a>
           </div>
@@ -163,10 +197,11 @@ export const DownloadSection: React.FC<DownloadSectionProps> = ({
             className="group inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full text-sm font-bold bg-[#007AFF] hover:bg-[#0071E3] text-white transition-all shadow-[0_8px_22px_-4px_rgba(0,122,255,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] whitespace-nowrap shrink-0"
           >
             <Star className="w-4 h-4 fill-amber-300 text-amber-300 group-hover:rotate-12 transition-transform" />
-            <span>去 GitHub 点亮 Star</span>
+            <span>去 GitHub 点亮 Star{formattedStars ? ` (${formattedStars})` : ''}</span>
           </a>
         </div>
       </div>
     </section>
   );
 };
+

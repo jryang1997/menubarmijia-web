@@ -20,16 +20,21 @@ import {
   SlidersHorizontal,
   Disc,
   Play,
+  Volume2,
+  VolumeX,
 } from 'lucide-react';
 import {
   SmartDevice,
   RoomLightingSummary,
   LightMode,
+  ClientOS,
   filterDevices,
   getLightModePreset,
   kelvinToRgb,
   rgbToHex,
+  formatStarCount,
 } from '../utils/mijiaEngine';
+import { playBubbleSound, playVoiceChime } from '../utils/soundEffects';
 
 interface InteractiveMenuBarHeroProps {
   devices: SmartDevice[];
@@ -54,6 +59,11 @@ interface InteractiveMenuBarHeroProps {
   onUndo: () => void;
   onPauseUndo: (paused: boolean) => void;
   lastFeedback: string | null;
+  soundEnabled: boolean;
+  onToggleSound: () => void;
+  starCount: number | null;
+  latestVersion: string;
+  clientOS: ClientOS;
 }
 
 interface FloatingBubbleProps {
@@ -202,6 +212,11 @@ export const InteractiveMenuBarHero: React.FC<InteractiveMenuBarHeroProps> = ({
   undoState,
   onUndo,
   onPauseUndo,
+  soundEnabled,
+  onToggleSound,
+  starCount,
+  latestVersion,
+  clientOS,
 }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [showSearchBar, setShowSearchBar] = useState<boolean>(false);
@@ -227,12 +242,13 @@ export const InteractiveMenuBarHero: React.FC<InteractiveMenuBarHeroProps> = ({
 
   const pulseBubble = (id: string) => {
     setActiveBubble(id);
+    playBubbleSound(soundEnabled);
     setTimeout(() => {
       setActiveBubble((prev) => (prev === id ? null : prev));
     }, 300);
   };
 
-  // Global keyboard shortcuts
+  // Global keyboard shortcuts (including direct blind-typing of s-f-t-d!)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
@@ -250,6 +266,7 @@ export const InteractiveMenuBarHero: React.FC<InteractiveMenuBarHeroProps> = ({
         if (e.key === 'Escape') {
           setSearchQuery('');
           setShowSearchBar(false);
+          (target as HTMLInputElement).blur();
         }
         return;
       }
@@ -259,6 +276,19 @@ export const InteractiveMenuBarHero: React.FC<InteractiveMenuBarHeroProps> = ({
         pulseBubble('sftd');
         setShowSearchBar(true);
         setTimeout(() => searchInputRef.current?.focus(), 50);
+      } else if (
+        !e.metaKey &&
+        !e.ctrlKey &&
+        !e.altKey &&
+        /^[sftdpmgdk]$/i.test(e.key)
+      ) {
+        e.preventDefault();
+        const ch = e.key.toLowerCase();
+        pulseBubble('sftd');
+        setShowSearchBar(true);
+        setSearchQuery((prev) => `${prev}${ch}`);
+        setLatencyBadge('⚡ 拼音直达 · 6ms');
+        setTimeout(() => searchInputRef.current?.focus(), 30);
       } else if (e.key === 'Enter') {
         e.preventDefault();
         pulseBubble('enter');
@@ -268,7 +298,7 @@ export const InteractiveMenuBarHero: React.FC<InteractiveMenuBarHeroProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [studyLamp, onToggleDevice]);
+  }, [studyLamp, onToggleDevice, soundEnabled]);
 
   // 7-Second Automated Demo Story
   const runSevenSecondStory = () => {
@@ -307,7 +337,11 @@ export const InteractiveMenuBarHero: React.FC<InteractiveMenuBarHeroProps> = ({
   };
 
   const triggerVoicePTT = () => {
-    pulseBubble('voice');
+    setActiveBubble('voice');
+    playVoiceChime(soundEnabled);
+    setTimeout(() => {
+      setActiveBubble((prev) => (prev === 'voice' ? null : prev));
+    }, 350);
     setIsVoiceListening(true);
     setShowSearchBar(true);
     setSearchQuery('把书房吸顶灯切到柔和夜灯...');
@@ -340,6 +374,12 @@ export const InteractiveMenuBarHero: React.FC<InteractiveMenuBarHeroProps> = ({
     setLatencyBadge('⚡ 本地 · 12ms');
   };
 
+  const formattedStars = formatStarCount(starCount);
+  const heroDownloadLabel =
+    clientOS === 'windows'
+      ? `下载 Windows 版 ${latestVersion}`
+      : `下载 macOS 版 ${latestVersion}`;
+
   return (
     <section
       id="hero"
@@ -361,7 +401,7 @@ export const InteractiveMenuBarHero: React.FC<InteractiveMenuBarHeroProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-12 md:mb-16">
           <div className="lg:col-span-7">
             <div className="text-xs font-mono tracking-tight text-slate-500 dark:text-slate-400 mb-3">
-              macOS 14+ 原生菜单栏 · Windows 11 托盘 · v1.1.4
+              macOS 14+ 原生菜单栏 · Windows 11 托盘 · {latestVersion}
             </div>
             <h1 className="font-display font-extrabold tracking-tight text-slate-900 dark:text-white text-[clamp(2.5rem,4.7vw,4.15rem)] leading-[1.07] text-balance">
               在电脑上，
@@ -381,7 +421,7 @@ export const InteractiveMenuBarHero: React.FC<InteractiveMenuBarHeroProps> = ({
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold bg-[#007AFF] hover:bg-[#006AE6] text-white shadow-[0_8px_20px_-4px_rgba(0,122,255,0.45)] transition-all whitespace-nowrap shrink-0"
               >
                 <Download className="w-4 h-4" />
-                <span>下载 v1.1.4</span>
+                <span>{heroDownloadLabel}</span>
               </a>
 
               <a
@@ -391,7 +431,7 @@ export const InteractiveMenuBarHero: React.FC<InteractiveMenuBarHeroProps> = ({
                 className="liquid-glass-surface group inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold text-slate-800 dark:text-white hover:scale-[1.02] transition-all whitespace-nowrap shrink-0"
               >
                 <Star className="w-4 h-4 text-amber-500 fill-amber-400 group-hover:rotate-12 transition-transform" />
-                <span>Star on GitHub</span>
+                <span>Star on GitHub{formattedStars ? ` · ${formattedStars}` : ''}</span>
               </a>
 
               <button
@@ -1007,6 +1047,19 @@ export const InteractiveMenuBarHero: React.FC<InteractiveMenuBarHeroProps> = ({
                       className="hover:opacity-75 cursor-pointer"
                     >
                       <RefreshCw className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={onToggleSound}
+                      aria-label={soundEnabled ? '关闭交互微音效' : '开启交互微音效'}
+                      title={soundEnabled ? '交互音效已开启' : '交互音效已静音'}
+                      className="hover:opacity-75 cursor-pointer"
+                    >
+                      {soundEnabled ? (
+                        <Volume2 className="w-3.5 h-3.5" />
+                      ) : (
+                        <VolumeX className="w-3.5 h-3.5 opacity-60" />
+                      )}
                     </button>
                     <SlidersHorizontal className="w-3.5 h-3.5 opacity-80" />
                   </div>

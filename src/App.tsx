@@ -8,9 +8,17 @@ import {
   INITIAL_DEVICES,
   SmartDevice,
   LightMode,
+  ClientOS,
   calculateRoomLighting,
   executeLocalCommand,
+  detectClientOS,
+  formatStarCount,
 } from './utils/mijiaEngine';
+import {
+  playToggleSound,
+  playSliderTick,
+  playVoiceChime,
+} from './utils/soundEffects';
 import { InteractiveMenuBarHero } from './components/InteractiveMenuBarHero';
 import { TactileStorySection } from './components/TactileStorySection';
 import { DownloadSection } from './components/DownloadSection';
@@ -20,6 +28,43 @@ export default function App() {
   const [devices, setDevices] = useState<SmartDevice[]>(INITIAL_DEVICES);
   const [selectedDeviceId, setSelectedDeviceId] = useState<string>('study-desk-lamp');
   const [lastFeedback, setLastFeedback] = useState<string | null>(null);
+  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
+  const [starCount, setStarCount] = useState<number | null>(null);
+  const [latestVersion, setLatestVersion] = useState<string>('v1.1.5');
+
+  const clientOS: ClientOS = useMemo(() => {
+    if (typeof navigator === 'undefined') return 'macos';
+    return detectClientOS(navigator.userAgent, navigator.platform);
+  }, []);
+
+  // Fetch live GitHub stars & latest release version with sessionStorage cache
+  useEffect(() => {
+    const cachedStars = sessionStorage.getItem('mbm_stars');
+    const cachedVer = sessionStorage.getItem('mbm_version');
+    if (cachedStars) setStarCount(Number(cachedStars));
+    if (cachedVer) setLatestVersion(cachedVer);
+
+    fetch('https://api.github.com/repos/jryang1997/MenuBarMijia')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data && typeof data.stargazers_count === 'number') {
+          setStarCount(data.stargazers_count);
+          sessionStorage.setItem('mbm_stars', String(data.stargazers_count));
+        }
+      })
+      .catch(() => {});
+
+    fetch('https://api.github.com/repos/jryang1997/MenuBarMijia/releases/latest')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data && typeof data.tag_name === 'string' && data.tag_name.trim()) {
+          const tag = data.tag_name.startsWith('v') ? data.tag_name : `v${data.tag_name}`;
+          setLatestVersion(tag);
+          sessionStorage.setItem('mbm_version', tag);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Undo state machine (mirrors MenuBarMijia's 10s Undo Bar)
   const previousDevicesRef = useRef<SmartDevice[] | null>(null);
@@ -86,6 +131,7 @@ export default function App() {
       setDevices(previousDevicesRef.current);
       previousDevicesRef.current = null;
     }
+    playToggleSound(true, soundEnabled);
     setUndoState((prev) => ({ ...prev, visible: false }));
     setLastFeedback('已恢复至修改前的设备状态、亮度与色温');
   };
@@ -95,6 +141,7 @@ export default function App() {
       prev.map((d) => {
         if (d.id !== id) return d;
         const nextOn = !d.on;
+        playToggleSound(nextOn, soundEnabled);
         return {
           ...d,
           on: nextOn,
@@ -108,6 +155,11 @@ export default function App() {
     id: string,
     updates: { brightness?: number; colorTemp?: number; lightMode?: LightMode; on?: boolean }
   ) => {
+    if (updates.brightness !== undefined) {
+      playSliderTick(updates.brightness, soundEnabled);
+    } else if (updates.colorTemp !== undefined) {
+      playSliderTick(Math.round(updates.colorTemp / 50), soundEnabled);
+    }
     setDevices((prev) =>
       prev.map((d) => {
         if (d.id !== id) return d;
@@ -121,12 +173,14 @@ export default function App() {
   };
 
   const handleUpdateClimate = (id: string, targetTemp: number) => {
+    playToggleSound(true, soundEnabled);
     setDevices((prev) =>
       prev.map((d) => (d.id === id ? { ...d, on: true, targetTemp } : d))
     );
   };
 
   const handleAllLightsOff = () => {
+    playToggleSound(false, soundEnabled);
     const snapshot = devices.map((d) => ({ ...d }));
     const next = devices.map((d) =>
       d.category === 'light' ? { ...d, on: false } : d
@@ -141,6 +195,7 @@ export default function App() {
   };
 
   const handleAllLightsOn = () => {
+    playToggleSound(true, soundEnabled);
     const snapshot = devices.map((d) => ({ ...d }));
     const next = devices.map((d) =>
       d.category === 'light'
@@ -164,6 +219,7 @@ export default function App() {
     const snapshot = devices.map((d) => ({ ...d }));
     const result = executeLocalCommand(devices, rawCommand);
     if (result.matched) {
+      playVoiceChime(soundEnabled);
       setDevices(result.updatedDevices);
       setLastFeedback(result.summaryZh);
       raiseUndoBar(snapshot, result.summaryZh, result.summaryEn, 10);
@@ -276,7 +332,7 @@ export default function App() {
             href="#download"
             className="hover:text-[#007AFF] dark:hover:text-sky-400 transition-colors whitespace-nowrap shrink-0"
           >
-            下载 v1.1.4
+            下载 {latestVersion}
           </a>
         </nav>
 
@@ -288,7 +344,7 @@ export default function App() {
             rel="noopener noreferrer"
             className="px-4 py-2 text-xs font-semibold text-white bg-[#007AFF] hover:bg-[#0071E3] rounded-full shadow-[0_4px_14px_rgba(0,122,255,0.32),inset_0_1px_0_rgba(255,255,255,0.35)] transition-all whitespace-nowrap shrink-0"
           >
-            ★ Star on GitHub
+            ★ Star on GitHub{formatStarCount(starCount) ? ` · ${formatStarCount(starCount)}` : ''}
           </a>
         </div>
       </header>
@@ -310,6 +366,11 @@ export default function App() {
           onUndo={handleUndo}
           onPauseUndo={setUndoPaused}
           lastFeedback={lastFeedback}
+          soundEnabled={soundEnabled}
+          onToggleSound={() => setSoundEnabled((prev) => !prev)}
+          starCount={starCount}
+          latestVersion={latestVersion}
+          clientOS={clientOS}
         />
 
         {/* Act II: The Continuous Narrative Spine (Keyboard -> Voice 12ms -> Lock & Undo) */}
@@ -325,10 +386,13 @@ export default function App() {
           onUndo={handleUndo}
         />
 
-        {/* Act III: Minimalist v1.1.4 Download & GitHub Star Finale */}
+        {/* Act III: Minimalist Download & GitHub Star Finale */}
         <DownloadSection
           anyLightOn={lighting.anyLightOn}
           ambientHex={lighting.ambientHex}
+          starCount={starCount}
+          latestVersion={latestVersion}
+          clientOS={clientOS}
         />
       </main>
 
@@ -343,7 +407,7 @@ export default function App() {
             />
             <div>
               <div className="font-display font-bold text-sm text-slate-950 dark:text-white">
-                MenuBarMijia v1.1.4
+                MenuBarMijia {latestVersion}
               </div>
               <div className="text-xs text-slate-500 dark:text-slate-400">
                 MIT License © jryang1997 (一群小羊说) · 个人开源作品，非小米或米家官方客户端

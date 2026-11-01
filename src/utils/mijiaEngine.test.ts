@@ -7,6 +7,8 @@ import {
   filterDevices,
   executeLocalCommand,
   getLightModePreset,
+  detectClientOS,
+  formatStarCount,
 } from './mijiaEngine';
 
 test('kelvinToRgb converts warm 2700K and cool 6500K accurately', () => {
@@ -73,3 +75,13 @@ test('getLightModePreset returns authentic Kelvin and brightness values', () => 
   assert.equal(moonlight.colorTemp, 2700);
   assert.equal(moonlight.brightness, 10);
 });
+
+test('detectClientOS and formatStarCount handle platforms and star counts cleanly', () => {
+  assert.equal(detectClientOS('Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5)'), 'macos');
+  assert.equal(detectClientOS('Mozilla/5.0 (Windows NT 10.0; Win64; x64)'), 'windows');
+  assert.equal(detectClientOS('Mozilla/5.0 (X11; Linux x86_64)'), 'other');
+  assert.equal(formatStarCount(42), '42');
+  assert.equal(formatStarCount(1280), '1.3k');
+  assert.equal(formatStarCount(0), null);
+});
+
